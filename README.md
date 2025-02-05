@@ -1,35 +1,54 @@
-# scan-to-pay
+# PWA Project - Scan To Pay
 
-This template should help get you started developing with Vue 3 in Vite.
 
-## Recommended IDE Setup
+### About the project
+Scan to Pay is a Progressive Web App built to disrupt the erstwhile stressful shopping experience of Shoppers. It is normal to have a customer fill their cart, then queue to make payments at the cashier. This process costs both the customers and the businesses. As there might be a lot of shoppers needing to complete their purchases thus unncessarily delaying the rest. Some customers may not be patient enough to wait and thus have to abandon cart. This cost the businesses in the long run as they lose customers.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Scan to pay essentially empowers the customer to literally pick items, scan them with an app provided for donload by the store, make payments on the app and walk out. This enhances customer experience and consequently increase customer retainership by the business.
 
-## Customize configuration
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## Tech Stack
 
-## Project Setup
+**Client:** React, Redux, TailwindCSS
 
-```sh
-npm install
+**Server:** Node, Express
+
+
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://link-to-project
 ```
 
-### Compile and Hot-Reload for Development
+Go to the project directory
 
-```sh
-npm run dev
+```bash
+  cd my-project
 ```
 
-### Compile and Minify for Production
+Install dependencies
 
-```sh
-npm run build
+```bash
+  npm install
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+Start the server
 
-```sh
-npm run lint
+```bash
+  npm run start
 ```
+
+
+## Screenshots
+
+![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+
+
+## 🔗 Links
+
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)]
+(https://www.linkedin.com/)
+
+[![twitter](https://img.shields.io/badge/twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/)
