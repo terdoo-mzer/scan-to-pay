@@ -37,7 +37,7 @@ const fetchProduct = async () => {
   console.log('Checking product in DB:')
 
   try {
-    const response = await fetch('http://localhost:9000/products/6036000022081', {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/products/6036000022081`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
