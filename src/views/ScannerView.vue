@@ -175,7 +175,7 @@ const checkProductInDB = async (productCode) => {
   console.log('Checking product in DB:', productCode)
   console.log(`${import.meta.env.VITE_API_BASE_URL}/products/${productCode}`)
   try {
-    const response = await fetch(`import.meta.env.VITE_API_BASE_URL}/products/${productCode}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/products/6036000022081`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

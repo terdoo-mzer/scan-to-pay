@@ -21,7 +21,7 @@ export default defineConfig({
       manifest: {
         "name": "Scan 2 Shop",
         "short_name": "S2S",
-        "start_url": "https://646e-102-88-111-153.ngrok-free.app/",
+        "start_url": "https://scan-to-pay.vercel.app/dashboard",
         "display": "standalone",
         "orientation": "any",
         "background_color": "#fff",
