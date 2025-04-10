@@ -104,10 +104,11 @@ async function detectBarcode() {
 
       // Check if product exists in "DB"
       const product = await checkProductInDB(barcode.rawValue)
-      if (product) {
+      if (product.status === 200) {
         alert(`Product found for barcode: ${barcode.rawValue}`)
         //addToCart(barcode.rawValue, product.name)
-      } else {
+      }
+      if (product.status === 404) {
         alert(`Product not found for barcode: ${barcode.rawValue}`)
         //addToCart(barcode.rawValue) // Add with barcode only if not in DB
       }
@@ -182,7 +183,7 @@ const checkProductInDB = async (productCode) => {
       },
     })
     const data = await response.json()
-    alert('Product Data Status: ', data.status)
+    // alert('Product Data Status: ', data.status)
     return data
   } catch (error) {
     console.error('Error fetching product data:', error)

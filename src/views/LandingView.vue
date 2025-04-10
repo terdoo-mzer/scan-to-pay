@@ -14,9 +14,13 @@
     >
       Fetch Product
     </button>
-    <div v-if="apiRes" class="mt-5">
+    <div v-if="apiRes && apiRes.status === 200" class="mt-5">
       <h2 class="text-xl font-semibold">Product Details:</h2>
-      <pre>{{ apiRes }}</pre>
+      <pre>{{ apiRes.message }}</pre>
+    </div>
+    <div v-if="apiRes && apiRes.status === 404" class="mt-5">
+      <h2 class="text-xl font-semibold">Product Details:</h2>
+      <pre>{{ apiRes.message }}</pre>
     </div>
   </div>
 </template>
@@ -37,7 +41,7 @@ const fetchProduct = async () => {
   console.log('Checking product in DB:')
   console.log(`${import.meta.env.VITE_API_BASE_URL}/products/6036000022081`)
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/products/6036000022081`, {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/products/603600002208`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
