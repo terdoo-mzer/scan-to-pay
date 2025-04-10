@@ -35,7 +35,7 @@ const installPwa = async () => {
 
 const fetchProduct = async () => {
   console.log('Checking product in DB:')
-
+  console.log(`${import.meta.env.VITE_API_BASE_URL}/products/6036000022081`)
   try {
     const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/products/6036000022081`, {
       method: 'GET',

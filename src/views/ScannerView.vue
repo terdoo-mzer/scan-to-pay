@@ -105,10 +105,10 @@ async function detectBarcode() {
       // Check if product exists in "DB"
       const product = await checkProductInDB(barcode.rawValue)
       if (product) {
-        console.log(`Product found for barcode: ${barcode.rawValue}`)
+        alert(`Product found for barcode: ${barcode.rawValue}`)
         //addToCart(barcode.rawValue, product.name)
       } else {
-        console.log(`Product not found for barcode: ${barcode.rawValue}`)
+        alert(`Product not found for barcode: ${barcode.rawValue}`)
         //addToCart(barcode.rawValue) // Add with barcode only if not in DB
       }
 
