@@ -182,7 +182,7 @@ const checkProductInDB = async (productCode) => {
       },
     })
     const data = await response.json()
-    console.log('Product Data: ', data)
+    alert('Product Data: ', data)
     return data
   } catch (error) {
     console.error('Error fetching product data:', error)
