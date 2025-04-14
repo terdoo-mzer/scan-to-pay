@@ -31,4 +31,14 @@ export const useShopStore = defineStore('shop', () => {
     })
     const createOrder = () => {}
     const clearCart = () => {}
+
+    return {
+        deviceId,
+        cart,
+        addCart,
+        removeCart,
+        cartCount,
+        createOrder,
+        clearCart
+    }
 })
