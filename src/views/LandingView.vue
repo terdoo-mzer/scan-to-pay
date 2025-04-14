@@ -15,6 +15,12 @@
       Show Success Toast
     </button>
     <button
+      @click="fetchProduct"
+      class="mt-5 px-6 py-3 bg-green-500 text-white rounded-lg shadow-md"
+    >
+      Fetch Product
+    </button>
+    <button
       @click="toastController('Product not found! please ask the attendants for help!', 'error')"
       class="mt-5 px-6 py-3 bg-red-500 text-white rounded-lg shadow-md"
     >
@@ -63,7 +69,7 @@ const fetchProduct = async () => {
   console.log('Checking product in DB:')
   console.log(`${import.meta.env.VITE_API_BASE_URL}/products/6036000022081`)
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/products/603600002208`, {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/products/6036000022081`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

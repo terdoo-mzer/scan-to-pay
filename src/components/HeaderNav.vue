@@ -28,4 +28,6 @@
     </router-link>
   </header>
 </template>
+<script setup>
+</script>
   
