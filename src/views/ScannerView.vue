@@ -13,10 +13,27 @@
       <p class="text-white text-lg">Camera is sleeping. Tap to wake.</p>
     </div>
   </div>
+  <toastComponent
+    v-model:toastMessage="toastMessage"
+    v-model:toastType="toastType"
+    v-model:toastIsVisible="toastIsVisible"
+  />
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+
+import toastComponent from '@/components/toastComponent.vue'
+
+const toastMessage = ref('')
+const toastType = ref('')
+const toastIsVisible = ref(null)
+
+const toastController = (message, type) => {
+  toastMessage.value = message
+  toastType.value = type
+  toastIsVisible.value = true
+}
 
 // Refs for DOM elements and state
 const video = ref(null)
@@ -105,12 +122,13 @@ async function detectBarcode() {
       // Check if product exists in "DB"
       const product = await checkProductInDB(barcode.rawValue)
       if (product.status === 200) {
-        alert(`Product found for barcode: ${barcode.rawValue}`)
-        //addToCart(barcode.rawValue, product.name)
+        // 1. Found product in db, therefore add to cart
+        //2.  Show success Toast to customer after adding to cart
+        toastController('Succesfully added to cart', 'success')
       }
       if (product.status === 404) {
-        alert(`Product not found for barcode: ${barcode.rawValue}`)
-        //addToCart(barcode.rawValue) // Add with barcode only if not in DB
+        // Product not found, therefore show No-success Toast to customer
+        toastController('Product not found! please ask the attendants for help!', 'error')
       }
 
       console.log('Resetting sleep timeout due to barcode detection')
@@ -173,8 +191,6 @@ function stopBarcodeDetection() {
 
 // Function to check if a product exists in the DB
 const checkProductInDB = async (productCode) => {
-  console.log('Checking product in DB:', productCode)
-  console.log(`${import.meta.env.VITE_API_BASE_URL}/products/${productCode}`)
   try {
     const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/products/${productCode}`, {
       method: 'GET',
