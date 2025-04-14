@@ -20,14 +20,19 @@
         </svg>
         <!-- Pill -->
         <div
+          v-if="store.cartCount > 0"
           class="absolute top-[-5px] right-[-5px] bg-red-400 text-white text-xs flex justify-center items-center rounded-full w-[18px] h-[18px]"
         >
-          1
+          {{ store.cartCount }}
         </div>
       </div>
     </router-link>
   </header>
 </template>
 <script setup>
+import { ref } from 'vue'
+import { useShopStore } from '@/stores'
+
+const store = useShopStore()
 </script>
   

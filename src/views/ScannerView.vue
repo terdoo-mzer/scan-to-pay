@@ -24,6 +24,9 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 import toastComponent from '@/components/toastComponent.vue'
+import { useShopStore } from '@/stores'
+
+const store = useShopStore()
 
 const toastMessage = ref('')
 const toastType = ref('')
@@ -136,14 +139,16 @@ async function detectBarcode() {
       })
 
       // Check if product exists in "DB"
-      const product = await checkProductInDB(barcode.rawValue)
-      playBeep()
-      if (product.status === 200) {
+      const productData = await checkProductInDB(barcode.rawValue)
+      playBeep() // Add beep sound for feedback
+      if (productData.status === 200) {
         // 1. Found product in db, therefore add to cart
+        store.addCart(productData)
+
         //2.  Show success Toast to customer after adding to cart
         toastController('Succesfully added to cart', 'success')
       }
-      if (product.status === 404) {
+      if (productData.status === 404) {
         // Product not found, therefore show No-success Toast to customer
         toastController('Product not found! Please ask the attendants for help!', 'error')
       }
