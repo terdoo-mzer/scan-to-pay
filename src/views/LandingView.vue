@@ -65,7 +65,25 @@ const installPwa = async () => {
   deferredPrompt.value.prompt()
 }
 
+// Initialize AudioContext for beep sound
+const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+function playBeep() {
+  const oscillator = audioContext.createOscillator()
+  const gainNode = audioContext.createGain()
+
+  oscillator.connect(gainNode)
+  gainNode.connect(audioContext.destination)
+
+  oscillator.type = 'sine'
+  oscillator.frequency.setValueAtTime(800, audioContext.currentTime)
+  gainNode.gain.setValueAtTime(0.5, audioContext.currentTime)
+
+  oscillator.start()
+  oscillator.stop(audioContext.currentTime + 0.1) // 100ms beep
+}
+
 const fetchProduct = async () => {
+  playBeep()
   console.log('Checking product in DB:')
   console.log(`${import.meta.env.VITE_API_BASE_URL}/products/6036000022081`)
   try {

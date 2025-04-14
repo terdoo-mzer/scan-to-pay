@@ -144,7 +144,7 @@ async function detectBarcode() {
       // Check if product exists in "DB"
       const product = await checkProductInDB(barcode.rawValue)
 
-      playBeep() // Play beep sound on detection
+      // playBeep() // Play beep sound on detection
       if (product.status === 200) {
         // 1. Found product in db, therefore add to cart
 
