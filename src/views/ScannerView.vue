@@ -44,6 +44,23 @@ const isCameraSleeping = ref(false)
 let sleepTimeout = null
 const INACTIVITY_DELAY = 5000
 
+// Initialize AudioContext for beep sound
+const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+function playBeep() {
+  const oscillator = audioContext.createOscillator()
+  const gainNode = audioContext.createGain()
+
+  oscillator.connect(gainNode)
+  gainNode.connect(audioContext.destination)
+
+  oscillator.type = 'sine'
+  oscillator.frequency.setValueAtTime(800, audioContext.currentTime)
+  gainNode.gain.setValueAtTime(0.5, audioContext.currentTime)
+
+  oscillator.start()
+  oscillator.stop(audioContext.currentTime + 0.1) // 100ms beep
+}
+
 // Initialize and fetch the video stream
 function fetchVideoStream() {
   const constraints = {
@@ -99,7 +116,6 @@ function startBarcodeDetection() {
 }
 
 // Detect barcodes in the video feed
-
 async function detectBarcode() {
   if (!video.value || !barcodeDetector || isCameraSleeping.value) return
 
@@ -121,6 +137,7 @@ async function detectBarcode() {
 
       // Check if product exists in "DB"
       const product = await checkProductInDB(barcode.rawValue)
+      playBeep()
       if (product.status === 200) {
         // 1. Found product in db, therefore add to cart
         //2.  Show success Toast to customer after adding to cart
