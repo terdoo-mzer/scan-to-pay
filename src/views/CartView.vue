@@ -41,24 +41,29 @@
             </div>
           </div>
         </div>
-        <router-link
-          to="/dashboard/scanner"
-          class="w-full bg-black text-white py-3 px-4 rounded-lg font-medium"
-        >
-          Continue Shopping
-        </router-link>
+        <div class="mt-4 flex justify-center items-center">
+          <router-link
+            to="/dashboard/scanner"
+            class="w-full bg-black text-white py-3 px-4 rounded-lg font-medium"
+          >
+            Continue Shopping
+          </router-link>
+        </div>
       </div>
 
       <!-- Order Summary -->
       <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg">
         <div class="space-y-2 mb-4">
+          <p class="text-lg font-semiboldtext-gray-600">
+            You have <span class="text-black">{{ store.cartCount }} items</span> in cart
+          </p>
           <div class="flex justify-between">
             <span class="text-gray-600">Subtotal</span>
-            <span class="font-medium">₦4,700</span>
+            <span class="font-medium">{{ store.cartSubTotal }}</span>
           </div>
         </div>
         <button class="w-full bg-black text-white py-3 px-4 rounded-lg font-medium">
-          Proceed to Checkout (₦4,700)
+          Proceed to Checkout {{ store.cartTotal }}
         </button>
       </div>
     </div>
