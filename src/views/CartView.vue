@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <div v-if="store.cartCount.length > 0" class="min-h-screen pb-[100px]">
+    <div v-if="store.cartCount > 0" class="min-h-screen pb-[100px]">
       <!-- Cart Items -->
       <div class="divide-y divide-gray-200 pb-[20px]">
         <!-- Item 1 -->
