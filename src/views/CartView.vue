@@ -44,7 +44,7 @@
         <div class="mt-4 flex justify-center items-center">
           <router-link
             to="/dashboard/scanner"
-            class="w-full bg-black text-white py-3 px-4 rounded-lg font-medium"
+            class="w-full flex justify-center items-center bg-black text-white py-3 px-4 rounded-lg font-medium"
           >
             Continue Shopping
           </router-link>
