@@ -95,6 +95,7 @@ export const useShopStore = defineStore('shop', () => {
         decrementQuantity,
         cartCount,
         cartTotal,
+        cartSubTotal,
         clearCart,
         loadCart
     }
