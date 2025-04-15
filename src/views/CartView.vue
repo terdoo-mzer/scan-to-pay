@@ -59,11 +59,11 @@
           </p>
           <div class="flex justify-between">
             <span class="text-gray-600">Subtotal</span>
-            <span class="font-medium">{{ store.cartSubTotal }}</span>
+            <span class="font-medium">{{ formatCurrency(store.cartSubTotal) }}</span>
           </div>
         </div>
         <button class="w-full bg-black text-white py-3 px-4 rounded-lg font-medium">
-          Proceed to Checkout {{ store.cartTotal }}
+          Proceed to Checkout {{ formatCurrency(store.cartTotal) }}
         </button>
       </div>
     </div>
