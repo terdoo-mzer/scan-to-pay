@@ -14,119 +14,10 @@
             <!-- Product Details -->
             <div class="flex-grow">
               <h3 class="font-medium text-gray-900 line-clamp-2">{{ item.name }}</h3>
-              <p class="text-gray-500 text-sm mt-1">Product description</p>
-              <p class="text-lg font-semibold text-gray-900 mt-2">₦1,200</p>
-            </div>
-          </div>
-
-          <!-- Quantity Controls -->
-          <div class="flex justify-between items-center mt-3">
-            <p class="text-amber-700">Remove Item</p>
-            <div class="flex items-center justify-between">
-              <button
-                class="w-10 h-10 rounded-full bg-gray-100 font-bold flex items-center justify-center"
-              >
-                -
-              </button>
-
-              <span class="text-lg font-medium px-4">2</span>
-
-              <button
-                class="w-10 h-10 rounded-full bg-gray-100 font-bold flex items-center justify-center"
-              >
-                +
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Item 2 -->
-        <div class="p-4 bg-white">
-          <div class="flex gap-3">
-            <!-- Product Image -->
-            <div class="w-15 h-15 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden">
-              <img src="/public/icons/s2s.png" alt="Product" class="w-full h-full object-cover" />
-            </div>
-
-            <!-- Product Details -->
-            <div class="flex-grow">
-              <h3 class="font-medium text-gray-900 line-clamp-2">Product Name</h3>
-              <p class="text-gray-500 text-sm mt-1">Product description</p>
-              <p class="text-lg font-semibold text-gray-900 mt-2">₦1,200</p>
-            </div>
-          </div>
-
-          <!-- Quantity Controls -->
-          <div class="flex justify-between items-center mt-3">
-            <p class="text-amber-700">Remove Item</p>
-            <div class="flex items-center justify-between">
-              <button
-                class="w-10 h-10 rounded-full bg-gray-100 font-bold flex items-center justify-center"
-              >
-                -
-              </button>
-
-              <span class="text-lg font-medium px-4">2</span>
-
-              <button
-                class="w-10 h-10 rounded-full bg-gray-100 font-bold flex items-center justify-center"
-              >
-                +
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Item 3 -->
-        <div class="p-4 bg-white">
-          <div class="flex gap-3">
-            <!-- Product Image -->
-            <div class="w-15 h-15 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden">
-              <img src="/public/icons/s2s.png" alt="Product" class="w-full h-full object-cover" />
-            </div>
-
-            <!-- Product Details -->
-            <div class="flex-grow">
-              <h3 class="font-medium text-gray-900 line-clamp-2">Product Name</h3>
-              <p class="text-gray-500 text-sm mt-1">Product description</p>
-              <p class="text-lg font-semibold text-gray-900 mt-2">₦1,200</p>
-            </div>
-          </div>
-
-          <!-- Quantity Controls -->
-          <div class="flex justify-between items-center mt-3">
-            <p class="text-amber-700">Remove Item</p>
-            <div class="flex items-center justify-between">
-              <button
-                class="w-10 h-10 rounded-full bg-gray-100 font-bold flex items-center justify-center"
-              >
-                -
-              </button>
-
-              <span class="text-lg font-medium px-4">2</span>
-
-              <button
-                class="w-10 h-10 rounded-full bg-gray-100 font-bold flex items-center justify-center"
-              >
-                +
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Item 4 -->
-        <div class="p-4 bg-white">
-          <div class="flex gap-3">
-            <!-- Product Image -->
-            <div class="w-15 h-15 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden">
-              <img src="/public/icons/s2s.png" alt="Product" class="w-full h-full object-cover" />
-            </div>
-
-            <!-- Product Details -->
-            <div class="flex-grow">
-              <h3 class="font-medium text-gray-900 line-clamp-2">Product Name</h3>
-              <p class="text-gray-500 text-sm mt-1">Product description</p>
-              <p class="text-lg font-semibold text-gray-900 mt-2">₦1,200</p>
+              <p class="text-gray-500 text-sm mt-1">{{ item.description }}</p>
+              <p class="text-lg font-semibold text-gray-900 mt-2">
+                {{ formatCurrency(item.price) }}
+              </p>
             </div>
           </div>
 
@@ -171,6 +62,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useShopStore } from '@/stores'
+import formatCurrency from '@/services/currencyFormatter'
 
 const store = useShopStore()
 </script>
