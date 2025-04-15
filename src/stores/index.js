@@ -27,7 +27,8 @@ export const useShopStore = defineStore('shop', () => {
     }
     const removeCart = () => {}
     const cartCount = computed(() => {
-        return cart.value.length
+        //return cart.value.length
+        return cart.value.reduce((acc, item) => acc + item.quantity, 0)
     })
     const createOrder = () => {}
     const clearCart = () => {}

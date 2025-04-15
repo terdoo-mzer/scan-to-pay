@@ -30,6 +30,7 @@ const router = createRouter({
           path: 'cart',
           name: 'CartPage',
           component: CartView,
+          meta: {hideNavigation: true, showBackButton: true}
         },
         {
           path: 'all-receipts',
