@@ -23,7 +23,7 @@
 
           <!-- Quantity Controls -->
           <div class="flex justify-between items-center mt-3">
-            <p class="text-amber-700">Remove Item</p>
+            <p class="text-amber-700" @click="store.removeFromCart(index)">Remove Item</p>
             <div class="flex items-center justify-between">
               <button
                 class="w-10 h-10 rounded-full bg-gray-100 font-bold flex items-center justify-center"
@@ -63,7 +63,7 @@
       </div>
     </div>
     <div v-else class="flex flex-col items-center justify-center">
-      <img src="/public/icons/cart" width="100" height="100" alt="Empty cart" class="" />
+      <img src="/public/icons/cart.svg" width="100" height="100" alt="Empty cart" class="" />
       <h3 class="">Your cart is empty</h3>
       <p class="">Looks like you haven't added anything to your cart yet</p>
       <router-link

@@ -30,8 +30,10 @@ export const useShopStore = defineStore('shop', () => {
     }
 
     // Remove item from cart
-    const removeFromCart = (barcode) => {
-        cart.value = cart.value.filter(item => item.barcode !== barcode);
+    const removeFromCart = (index) => {
+        alert('You have clicked to remove item: ', index)
+        return
+        // const itemIndex = cart.value.findIndex(item =>  )
     }
 
     // Increment item quantity in cart
