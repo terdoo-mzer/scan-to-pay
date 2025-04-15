@@ -31,9 +31,7 @@ export const useShopStore = defineStore('shop', () => {
 
     // Remove item from cart
     const removeFromCart = (index) => {
-        alert( index)
-        return
-        // const itemIndex = cart.value.findIndex(item =>  )
+        cart.value.splice(index, 1);
     }
 
     // Increment item quantity in cart
