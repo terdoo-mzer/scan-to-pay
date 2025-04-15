@@ -61,9 +61,13 @@ export const useShopStore = defineStore('shop', () => {
         return cart.value.reduce((acc, item) => acc + item.quantity, 0);
     });
 
+    const cartSubTotal = computed(() => {
+        return cart.value.reduce((acc, item) => acc + item.price, 0);
+    })
+
     // Total Amount
     const cartTotal = computed(() => {
-        return cart.value.reduce((acc, item) => acc + item.price, 0);
+        return cartSubTotal.value + (cartSubTotal.value * 0.075); // Assuming 7.5% tax
     });
 
     const clearCart = () => {

@@ -103,9 +103,9 @@ const receipts = ref([
   { id: 12349, date: '2025-03-25', amount: 60.0, time: '18:20' },
 ])
 
-const isModalOpen = ref(false)
+// const isModalOpen = ref(false)
 
-const startShopping = () => {
-  isModalOpen.value = !isModalOpen.value
-}
+// const startShopping = () => {
+//   isModalOpen.value = !isModalOpen.value
+// }
 </script>

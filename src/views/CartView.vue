@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <div class="min-h-screen pb-[100px]">
+    <div v-if="store.cartCount.length > 0" class="min-h-screen pb-[100px]">
       <!-- Cart Items -->
       <div class="divide-y divide-gray-200 pb-[20px]">
         <!-- Item 1 -->
@@ -41,6 +41,12 @@
             </div>
           </div>
         </div>
+        <router-link
+          to="/dashboard/scanner"
+          class="w-full bg-black text-white py-3 px-4 rounded-lg font-medium"
+        >
+          Continue Shopping
+        </router-link>
       </div>
 
       <!-- Order Summary -->
@@ -55,6 +61,17 @@
           Proceed to Checkout (₦4,700)
         </button>
       </div>
+    </div>
+    <div v-else class="flex flex-col items-center justify-center">
+      <img src="/public/icons/cart" width="100" height="100" alt="Empty cart" class="" />
+      <h3 class="">Your cart is empty</h3>
+      <p class="">Looks like you haven't added anything to your cart yet</p>
+      <router-link
+        to="/dashboard/scanner"
+        class="w-full bg-black text-white py-3 px-4 rounded-lg font-medium"
+      >
+        Continue Shopping
+      </router-link>
     </div>
   </div>
 </template>
