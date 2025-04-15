@@ -26,6 +26,7 @@
             <p class="text-amber-700" @click="store.removeFromCart(index)">Remove Item</p>
             <div class="flex items-center justify-between">
               <button
+                @click="store.decrementQuantity(index)"
                 class="w-10 h-10 rounded-full bg-gray-100 font-bold flex items-center justify-center"
               >
                 -
@@ -34,6 +35,7 @@
               <span class="text-lg font-medium px-4"> {{ item.quantity }}</span>
 
               <button
+                @click="store.incrementQuantity(index)"
                 class="w-10 h-10 rounded-full bg-gray-100 font-bold flex items-center justify-center"
               >
                 +
@@ -54,7 +56,7 @@
       <!-- Order Summary -->
       <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg">
         <div class="space-y-2 mb-4">
-          <p class="text-lg font-semiboldtext-gray-600">
+          <p class="text-lg font-semibold text-gray-600">
             You have <span class="text-black">{{ store.cartCount }} items</span> in cart
           </p>
           <div class="flex justify-between">
@@ -63,7 +65,7 @@
           </div>
         </div>
         <button class="w-full bg-black text-white py-3 px-4 rounded-lg font-medium">
-          Proceed to Checkout {{ formatCurrency(store.cartTotal) }}
+          Proceed to Checkout ({{ formatCurrency(store.cartTotal) }})
         </button>
       </div>
     </div>
@@ -79,14 +81,30 @@
       </router-link>
     </div>
   </div>
+  <toastComponent
+    v-model:toastMessage="toastMessage"
+    v-model:toastType="toastType"
+    v-model:toastIsVisible="toastIsVisible"
+  />
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { useShopStore } from '@/stores'
 import formatCurrency from '@/services/currencyFormatter'
+import toastComponent from '@/components/toastComponent.vue'
 
 const store = useShopStore()
+
+const toastMessage = ref('')
+const toastType = ref('')
+const toastIsVisible = ref(null)
+
+const toastController = (message, type) => {
+  toastMessage.value = message
+  toastType.value = type
+  toastIsVisible.value = true
+}
 </script>
 
 <style lang="scss" scoped>

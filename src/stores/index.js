@@ -35,8 +35,8 @@ export const useShopStore = defineStore('shop', () => {
     }
 
     // Increment item quantity in cart
-    const incrementQuantity = (barcode) => {
-        const item = cart.value.find(item => item.barcode === barcode);
+    const incrementQuantity = (index) => {
+        const item = cart.value[index];
         if(item) {
             item.quantity++;
             item.price = (item.price / (item.quantity - 1)) * item.quantity;
@@ -44,14 +44,14 @@ export const useShopStore = defineStore('shop', () => {
     }
 
     // Decrement item quantity in cart
-    const decrementQuantity = (barcode) => {
-        const item = cart.value.find(item => item.barcode === barcode);
+    const decrementQuantity = (index) => {
+        const item = cart.value[index];
         if(item) {
             if(item.quantity > 1) {
                 item.quantity--;
                 item.price = (item.price / (item.quantity + 1)) * item.quantity;
             } else {
-                removeFromCart(barcode);
+                removeFromCart(index);
             }
         }
     }
