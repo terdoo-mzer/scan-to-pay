@@ -31,7 +31,7 @@
                 -
               </button>
 
-              <span class="text-lg font-medium px-4">2</span>
+              <span class="text-lg font-medium px-4"> {{ item.quantity }}</span>
 
               <button
                 class="w-10 h-10 rounded-full bg-gray-100 font-bold flex items-center justify-center"
