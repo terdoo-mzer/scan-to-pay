@@ -1,6 +1,6 @@
 <template>
-  <div class="">
-    <div v-if="store.cartCount > 0" class="min-h-screen pb-[100px]">
+  <div class="min-h-screen">
+    <div v-if="store.cartCount > 0" class="pb-[100px]">
       <!-- Cart Items -->
       <div class="divide-y divide-gray-200 pb-[20px]">
         <!-- Item 1 -->
@@ -63,14 +63,14 @@
       </div>
     </div>
     <div v-else class="flex flex-col items-center justify-center">
-      <img src="/public/icons/cart.svg" width="100" height="100" alt="Empty cart" class="" />
-      <h3 class="">Your cart is empty</h3>
-      <p class="">Looks like you haven't added anything to your cart yet</p>
+      <img src="/public/icons/cart.svg" width="70" height="70" alt="Empty cart" class="" />
+      <h3 class="text-lg">Your cart is empty</h3>
+
       <router-link
         to="/dashboard/scanner"
-        class="w-full bg-black text-white py-3 px-4 rounded-lg font-medium"
+        class="w-full flex justify-center items-center bg-black text-white py-3 px-4 rounded-lg font-medium"
       >
-        Continue Shopping
+        Start Shopping
       </router-link>
     </div>
   </div>
