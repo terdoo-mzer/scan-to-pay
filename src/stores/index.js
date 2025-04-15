@@ -31,7 +31,7 @@ export const useShopStore = defineStore('shop', () => {
 
     // Remove item from cart
     const removeFromCart = (index) => {
-        alert('You have clicked to remove item: ', index)
+        alert( index)
         return
         // const itemIndex = cart.value.findIndex(item =>  )
     }
