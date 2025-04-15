@@ -1,45 +1,96 @@
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useShopStore = defineStore('shop', () => {
+    // Initialize cart from localStorage if available
     const deviceId = ref(null);
-    const cart = ref([]);
+    const cart = ref(JSON.parse(localStorage.getItem('cart')) || []);
+    
+    // Save to localStorage whenever cart changes
+    watch(cart, (newCart) => {
+        localStorage.setItem('cart', JSON.stringify(newCart));
+    }, { deep: true });
+
+    // Add item to cart
     const addCart = (product) => {
-        // Check if the product is already in the cart
         const existingItem = cart.value.find(item => item.barcode === product.product.barcode);
         if(existingItem) {
-            // If item exixts increase Item count and price
             existingItem.quantity++;
-            existingItem.price += product.product.price;
-            return
+            existingItem.price = product.product.price * existingItem.quantity;
         } else {
-            // Create a new item in the cart 
-            const item = {
+            cart.value.push({
                 barcode: product.product.barcode,
                 name: product.product.name,
+                description: product.product.description,
                 quantity: 1,
                 price: product.product.price,
-            }
-    
-            cart.value.push(item);
+                imageUrl: product.product.imageUrl // Added for display
+            });
         }
-    
     }
-    const removeCart = () => {}
+
+    // Remove item from cart
+    const removeFromCart = (barcode) => {
+        cart.value = cart.value.filter(item => item.barcode !== barcode);
+    }
+
+    // Increment item quantity in cart
+    const incrementQuantity = (barcode) => {
+        const item = cart.value.find(item => item.barcode === barcode);
+        if(item) {
+            item.quantity++;
+            item.price = (item.price / (item.quantity - 1)) * item.quantity;
+        }
+    }
+
+    // Decrement item quantity in cart
+    const decrementQuantity = (barcode) => {
+        const item = cart.value.find(item => item.barcode === barcode);
+        if(item) {
+            if(item.quantity > 1) {
+                item.quantity--;
+                item.price = (item.price / (item.quantity + 1)) * item.quantity;
+            } else {
+                removeFromCart(barcode);
+            }
+        }
+    }
+
+    // Number if items in cart
     const cartCount = computed(() => {
-        //return cart.value.length
-        return cart.value.reduce((acc, item) => acc + item.quantity, 0)
-    })
-    const createOrder = () => {}
-    const clearCart = () => {}
+        return cart.value.reduce((acc, item) => acc + item.quantity, 0);
+    });
+
+    // Total Amount
+    const cartTotal = computed(() => {
+        return cart.value.reduce((acc, item) => acc + item.price, 0);
+    });
+
+    const clearCart = () => {
+        cart.value = [];
+    }
+
+    // Initialize from localStorage on store creation
+    const loadCart = () => {
+        const savedCart = localStorage.getItem('cart');
+        if(savedCart) {
+            cart.value = JSON.parse(savedCart);
+        }
+    }
+
+    // Load cart immediately
+    loadCart();
 
     return {
         deviceId,
         cart,
         addCart,
-        removeCart,
+        removeFromCart,
+        incrementQuantity,
+        decrementQuantity,
         cartCount,
-        createOrder,
-        clearCart
+        cartTotal,
+        clearCart,
+        loadCart
     }
 })
