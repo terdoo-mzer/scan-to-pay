@@ -93,7 +93,7 @@
       </router-link>
     </div>
   </div>
-  <ToastComponent
+  <toastComponent
     v-model:toastMessage="toastMessage"
     v-model:toastType="toastType"
     v-model:toastIsVisible="toastIsVisible"
@@ -104,7 +104,7 @@
 import { ref } from 'vue'
 import { useShopStore } from '@/stores'
 import formatCurrency from '@/services/currencyFormatter'
-import ToastComponent from '@/components/ToastComponent.vue'
+import toastComponent from '@/components/toastComponent.vue'
 
 const store = useShopStore()
 
