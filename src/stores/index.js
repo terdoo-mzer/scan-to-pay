@@ -1,9 +1,10 @@
 import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
 
+
 export const useShopStore = defineStore('shop', () => {
     // Initialize cart from localStorage if available
-    const deviceId = ref(null);
+    const customerId = ref(JSON.parse(localStorage.getItem('customerId')) || null);
     const cart = ref(JSON.parse(localStorage.getItem('cart')) || []);
     
     // Save to localStorage whenever cart changes
@@ -71,6 +72,42 @@ export const useShopStore = defineStore('shop', () => {
         return cartSubTotal.value 
     });
 
+    // Create order via the API
+    const createOrder = async () => {
+
+        try {
+            // Check if devieID is set
+            if(customerId.value === null) {
+                // Generate a new device ID and save it to localStorage
+                customerId.value = Math.random().toString(36).substring(2, 15);
+                localStorage.setItem('customerId', JSON.stringify(customerId.value));
+            } 
+
+            const order = {
+                customerId: customerId.value,
+                items: cart.value
+            }
+
+            // Make API call to create order
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/orders`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(order)
+            })
+
+            const data = await response.json();
+
+            return data;
+        } catch(error) {
+            console.error('Error creating order:', error);
+        }
+        
+
+    }
+
+
     const clearCart = () => {
         cart.value = [];
     }
@@ -87,7 +124,7 @@ export const useShopStore = defineStore('shop', () => {
     loadCart();
 
     return {
-        deviceId,
+        customerId,
         cart,
         addCart,
         removeFromCart,
@@ -96,6 +133,7 @@ export const useShopStore = defineStore('shop', () => {
         cartCount,
         cartTotal,
         cartSubTotal,
+        createOrder,
         clearCart,
         loadCart
     }

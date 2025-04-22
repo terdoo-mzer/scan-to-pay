@@ -13,7 +13,7 @@
       <p class="text-white text-lg">Camera is sleeping. Tap to wake.</p>
     </div>
   </div>
-  <toastComponent
+  <ToastComponent
     v-model:toastMessage="toastMessage"
     v-model:toastType="toastType"
     v-model:toastIsVisible="toastIsVisible"
@@ -23,7 +23,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 
-import toastComponent from '@/components/toastComponent.vue'
+import ToastComponent from '@/components/ToastComponent.vue'
 import { useShopStore } from '@/stores'
 
 const store = useShopStore()

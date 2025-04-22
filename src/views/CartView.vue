@@ -1,8 +1,9 @@
 <template>
   <div class="min-h-screen">
-    <div v-if="store.cartCount > 0" class="pb-[100px]">
+    <!-- Run this if there are items in the cart -->
+    <div v-if="store.cartCount > 0" class="">
       <!-- Cart Items -->
-      <div class="divide-y divide-gray-200 pb-[20px]">
+      <div class="divide-y divide-gray-200 pb-[50px]">
         <!-- Item 1 -->
         <div v-for="(item, index) in store.cart" :key="index" class="p-4 bg-white">
           <div class="flex gap-3">
@@ -43,6 +44,8 @@
             </div>
           </div>
         </div>
+
+        <!-- Back button -->
         <div class="mt-4 flex justify-center items-center">
           <router-link
             to="/dashboard/scanner"
@@ -64,11 +67,20 @@
             <span class="font-medium">{{ formatCurrency(store.cartSubTotal) }}</span>
           </div>
         </div>
-        <button class="w-full bg-black text-white py-3 px-4 rounded-lg font-medium">
+        <button
+          @click="SubmitOrder"
+          :disabled="loading"
+          :class="loading ? 'opacity-50 cursor-not-allowed' : ''"
+          class="w-full bg-black text-white py-3 px-4 rounded-lg font-medium"
+        >
           Proceed to Checkout ({{ formatCurrency(store.cartTotal) }})
         </button>
       </div>
     </div>
+    <div v-if="output">
+      <div>{{ output }}</div>
+    </div>
+    <!-- Run this if there are no items in the cart -->
     <div v-else class="flex flex-col items-center justify-center">
       <img src="/public/icons/cart.svg" width="70" height="70" alt="Empty cart" class="" />
       <h3 class="text-lg">Your cart is empty</h3>
@@ -81,7 +93,7 @@
       </router-link>
     </div>
   </div>
-  <toastComponent
+  <ToastComponent
     v-model:toastMessage="toastMessage"
     v-model:toastType="toastType"
     v-model:toastIsVisible="toastIsVisible"
@@ -92,9 +104,12 @@
 import { ref } from 'vue'
 import { useShopStore } from '@/stores'
 import formatCurrency from '@/services/currencyFormatter'
-import toastComponent from '@/components/toastComponent.vue'
+import ToastComponent from '@/components/ToastComponent.vue'
 
 const store = useShopStore()
+
+const output = ref('')
+const loading = ref(false)
 
 const toastMessage = ref('')
 const toastType = ref('')
@@ -104,6 +119,19 @@ const toastController = (message, type) => {
   toastMessage.value = message
   toastType.value = type
   toastIsVisible.value = true
+}
+
+const SubmitOrder = async () => {
+  try {
+    loading.value = true
+    toastController('Submitting Order...', 'info')
+    const response = await store.submitOrder()
+    output.value = response
+  } catch (error) {
+    console.log(error)
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 
