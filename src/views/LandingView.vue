@@ -35,7 +35,7 @@
       <pre>{{ apiRes.message }}</pre>
     </div>
   </div>
-  <toastComponent
+  <ToastComponent
     v-model:toastMessage="toastMessage"
     v-model:toastType="toastType"
     v-model:toastIsVisible="toastIsVisible"
@@ -44,7 +44,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import toastComponent from '@/components/toastComponent.vue'
+import ToastComponent from '@/components/ToastComponent.vue'
 
 const deferredPrompt = ref(null)
 
