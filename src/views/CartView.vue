@@ -104,7 +104,7 @@
 import { ref } from 'vue'
 import { useShopStore } from '@/stores'
 import formatCurrency from '@/services/currencyFormatter'
-import ToastComponent from '@/components/ToastComponent.vue'
+import ToastComponent from '../components/ToastComponent.vue'
 
 const store = useShopStore()
 

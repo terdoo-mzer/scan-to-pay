@@ -23,7 +23,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 
-import ToastComponent from '@/components/ToastComponent.vue'
+import ToastComponent from '../components/ToastComponent.vue'
 import { useShopStore } from '@/stores'
 
 const store = useShopStore()
