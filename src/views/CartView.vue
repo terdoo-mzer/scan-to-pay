@@ -124,9 +124,10 @@ const toastController = (message, type) => {
 const SubmitOrder = async () => {
   try {
     loading.value = true
-    toastController('Submitting Order...', 'info')
+    //  toastController('Submitting Order...', 'success')
     const response = await store.submitOrder()
-    output.value = response
+    alert(response)
+    //  output.value = response
   } catch (error) {
     console.log(error)
   } finally {
