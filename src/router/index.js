@@ -38,7 +38,7 @@ const router = createRouter({
           component: ReceiptListView
         },
         {
-          path: 'receipt/:id',
+          path: 'receipt/:orderId',
           name: 'ReceiptPage',
           component: ReceiptView
         },

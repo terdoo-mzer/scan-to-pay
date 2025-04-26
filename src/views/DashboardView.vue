@@ -19,7 +19,7 @@
       </div>
 
       <!-- Section Two -->
-      <div class="">
+      <div v-if="receipts" class="">
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-xl font-semibold">Recent Receipts</h2>
           <router-link to="dashboard/all-receipts" class="text-blue-500 hover:underline"
@@ -29,9 +29,9 @@
 
         <!-- Receipt List -->
         <ul class="space-y-3">
-          <li v-for="receipt in receipts" :key="receipt.id">
+          <li v-for="receipt in receipts" :key="receipt._id">
             <router-link
-              :to="`dashboard/receipt/${receipt.id}`"
+              :to="`dashboard/receipt/${receipt._id}`"
               class="block p-3 bg-gray-100 rounded-lg shadow-sm hover:bg-gray-200"
             >
               <div class="flex items-center gap-2">
@@ -70,42 +70,52 @@
                 <div class="flex justify-between w-full">
                   <!-- Receipt title and date -->
                   <div class="">
-                    <p>Receipt - {{ receipt.id }}</p>
-                    <small>{{ receipt.date }}, {{ receipt.time }} </small>
+                    <p>
+                      <span class="text-black font-bold text-lg">#</span>
+                      {{ receipt.receiptNumber }}
+                    </p>
+                    <small> {{ formatDate(receipt.createdAt) }} </small>
                   </div>
 
                   <!-- Financials -->
-                  <div>{{ formatCurrency(receipt.amount) }}</div>
+                  <div>{{ formatCurrency(receipt.total) }}</div>
                 </div>
               </div>
             </router-link>
           </li>
         </ul>
       </div>
+
+      <!-- No Receipts --->
+      <div v-else class="text-center mt-10">
+        <p class="text-gray-500">No receipts available.</p>
+        <p class="text-gray-500">Start shopping to generate receipts.</p>
+      </div>
     </div>
   </div>
   <!-- <ScannerModal :modalBool="isModalOpen" @closeModal="startShopping" /> -->
 </template>
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import ScannerModal from '@/components/ScannerModal.vue'
 
 import formatCurrency from '@/services/currencyFormatter'
+import formatDate from '@/services/dateTimeFormatter'
+import { useShopStore } from '@/stores'
+
+const shop = useShopStore()
 
 // const router = useRouter()
 
-const receipts = ref([
-  { id: 12345, date: '2025-03-29', amount: 50.0, time: '14:30' },
-  { id: 12346, date: '2025-03-28', amount: 30.0, time: '12:15' },
-  { id: 12347, date: '2025-03-27', amount: 75.0, time: '16:45' },
-  { id: 12348, date: '2025-03-26', amount: 40.0, time: '10:10' },
-  { id: 12349, date: '2025-03-25', amount: 60.0, time: '18:20' },
-])
+const receipts = ref(null)
+const getOrders = async () => {
+  const receiptsData = await shop.retrieveOrders()
+  receipts.value = receiptsData
 
-// const isModalOpen = ref(false)
+  console.log('Receipts Data:', receiptsData)
+}
 
-// const startShopping = () => {
-//   isModalOpen.value = !isModalOpen.value
-// }
+onMounted(() => {
+  getOrders()
+})
 </script>

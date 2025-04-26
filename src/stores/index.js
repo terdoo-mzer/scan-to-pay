@@ -6,6 +6,60 @@ export const useShopStore = defineStore('shop', () => {
     // Initialize cart from localStorage if available
     const customerId = ref(JSON.parse(localStorage.getItem('customerId')) || null);
     const cart = ref(JSON.parse(localStorage.getItem('cart')) || []);
+
+    // Retrieve completed orders for a customer using customer Id
+    const retrieveOrders = async () => {
+        if(!customerId.value) {
+            return "No orders yet"
+        }
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/orders/${customerId.value}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+            if(!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            // Check if the response is empty   
+            if(response.status === 404) {
+                return "No orders yet"
+            }
+
+            const data = await response.json();
+            console.log('Orders retrieved:', data.orders);
+            return data.orders;
+        }catch(error){
+            console.error('Error retrieving orders:', error);
+            throw error; // Rethrow the error to be handled by the caller
+
+        }
+    }
+
+    // Retrieve single order by orderId
+    const retrieveSingleOrder = async (orderId) => {
+        try {
+            if(!customerId.value) {
+                throw new Error('There is No customer Id');
+            }
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/orders/${customerId.value}/${orderId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+            if(!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            const data = await response.json();
+            console.log('Order retrieved:', data.order);
+            return data.order;
+        }catch(error){
+            console.error('Error retrieving order:', error);
+            throw error; // Rethrow the error to be handled by the caller
+        }
+    }
     
     // Save to localStorage whenever cart changes
     watch(cart, (newCart) => {
@@ -83,10 +137,32 @@ export const useShopStore = defineStore('shop', () => {
                 localStorage.setItem('customerId', JSON.stringify(customerId.value));
             } 
 
+            // const order = {
+            //     customerId: customerId.value,
+            //     items: cart.value
+            // }
+
             const order = {
-                customerId: customerId.value,
-                items: cart.value
+            
+                    items: [
+                      {
+                        barcode: "6154000082116",
+                        name: "Bigi 750ml Bottle Water",
+                        price: 400,
+                        quantity: 1
+                      },
+                      {
+                        barcode: "5449000293824",
+                        name: "Coca-cola 60cl",
+                        price: 700,
+                        quantity: 1
+                      }
+                    ],
+                  customerId: customerId.value
+            
+                
             }
+
 
             // Make API call to create order
             const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/orders`, {
@@ -98,6 +174,15 @@ export const useShopStore = defineStore('shop', () => {
             })
 
             const data = await response.json();
+            console.log('Order created:', data);
+
+            // Check if order id is in Localstorage, If there is, override it with the new one
+            const existingOrderId = localStorage.getItem('order_id');
+            if(existingOrderId) {
+                localStorage.removeItem('order_id');
+            }
+            // Save new order ID to localStorage
+            localStorage.setItem('order_id', data.orderId); 
 
             return data;
         } catch(error) {
@@ -124,6 +209,8 @@ export const useShopStore = defineStore('shop', () => {
     loadCart();
 
     return {
+        retrieveOrders,
+        retrieveSingleOrder,
         customerId,
         cart,
         addCart,
