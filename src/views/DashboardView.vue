@@ -19,7 +19,7 @@
       </div>
 
       <!-- Section Two -->
-      <div v-if="receipts" class="">
+      <div v-if="receipts !== null" class="">
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-xl font-semibold">Recent Receipts</h2>
           <router-link to="dashboard/all-receipts" class="text-blue-500 hover:underline"
@@ -108,11 +108,20 @@ const shop = useShopStore()
 // const router = useRouter()
 
 const receipts = ref(null)
+const message = ref('')
 const getOrders = async () => {
   const receiptsData = await shop.retrieveOrders()
-  receipts.value = receiptsData
-
-  console.log('Receipts Data:', receiptsData)
+  if (receiptsData.code === 1) {
+    message.value = receiptsData.message
+    console.log('Error:', message.value)
+    return
+  }
+  if (receiptsData.code === 0) {
+    message.value = receiptsData.message
+    receipts.value = receiptsData.orders
+    console.log('Receipts: ', receiptsData.orders)
+    return
+  }
 }
 
 onMounted(() => {

@@ -9,10 +9,15 @@ export const useShopStore = defineStore('shop', () => {
 
     // Retrieve completed orders for a customer using customer Id
     const retrieveOrders = async () => {
-        if(!customerId.value) {
-            return "No orders yet"
-        }
+    
         try {
+            if(customerId.value === null) {
+               
+                return {
+                    message: 'There is No customer Id',
+                    code: 1
+                }
+            }
             const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/orders/${customerId.value}`, {
                 method: 'GET',
                 headers: {
@@ -29,9 +34,14 @@ export const useShopStore = defineStore('shop', () => {
 
             const data = await response.json();
             console.log('Orders retrieved:', data.orders);
-            return data.orders;
+            return {
+                message: 'Orders retrieved successfully',
+                code: 0,
+                orders: data.orders
+            };
         }catch(error){
             console.error('Error retrieving orders:', error);
+
             throw error; // Rethrow the error to be handled by the caller
 
         }
@@ -179,9 +189,11 @@ export const useShopStore = defineStore('shop', () => {
             // Check if order id is in Localstorage, If there is, override it with the new one
             const existingOrderId = localStorage.getItem('order_id');
             if(existingOrderId) {
+                console.log('Removing this id: ', existingOrderId)
                 localStorage.removeItem('order_id');
             }
             // Save new order ID to localStorage
+            console.log('Saving this id: ', data.orderId)
             localStorage.setItem('order_id', data.orderId); 
 
             return data;

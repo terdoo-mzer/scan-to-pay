@@ -117,7 +117,6 @@ const SubmitOrder = async () => {
 
     const response = await store.createOrder()
     if (response.status !== 201) {
-      alert(response)
       return
     }
     processPayment(response)
