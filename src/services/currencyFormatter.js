@@ -1,6 +1,6 @@
-export default function formatCurrency (amount) {
-    return new Intl.NumberFormat("en-NG", {
-      style: "currency",
-      currency: "NGN",
-    }).format(amount);
-};
+export default function formatCurrency(amount) {
+  return `₦${Number(amount).toLocaleString("en-NG", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })}`;
+}
