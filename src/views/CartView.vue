@@ -1,7 +1,7 @@
-
 <template>
   <div class="min-h-screen">
     <!-- Run this if there are items in the cart -->
+
     <div v-if="store.cartCount > 0" class="">
       <!-- Cart Items -->
       <div class="divide-y divide-gray-200 pb-[50px]">
@@ -76,9 +76,13 @@
           @click="SubmitOrder"
           :disabled="loading"
           :class="loading ? 'opacity-50 cursor-not-allowed' : ''"
-          class="w-full bg-black text-white py-3 px-4 rounded-lg font-medium"
+          class="flex items-center justify-center w-full bg-black text-white py-3 px-4 rounded-lg font-medium"
         >
-          Proceed to Checkout ({{ formatCurrency(store.cartTotal) }})
+          Proceed to Buy ({{ formatCurrency(store.cartTotal) }})
+          <span
+            v-if="loading"
+            class="ml-2 spinner-border animate-spin inline-block w-6 h-6 border-2 border-current border-t-transparent rounded-full"
+          ></span>
         </button>
       </div>
     </div>
@@ -111,7 +115,7 @@ import toastComponent from '@/components/toastComponent.vue'
 import { processPayment } from '@/services/paymentService'
 
 const store = useShopStore()
-const loading = ref(false)
+const loading = ref(true)
 
 const toastMessage = ref('')
 const toastType = ref('')

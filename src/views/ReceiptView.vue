@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen max-w-sm p-4">
+  <div class="min-h-screen">
     <!-- Skeleton Loader -->
     <div v-if="loading" role="status" class="animate-pulse">
       <div v-for="i in 20" :key="i" class="h-2 bg-gray-200 rounded-full mb-2.5"></div>
@@ -10,7 +10,7 @@
     <!-- Receipt Content -->
     <div
       v-if="receipt"
-      class="receipt mx-auto p-4 bg-white text-black font-sans text-sm border border-gray-300 rounded shadow-md"
+      class="receipt mx-auto p-4 bg-white text-black font-sans text-sm rounded shadow-lg"
     >
       <!-- Header -->
       <div class="text-center mb-4">
