@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen">
     <!-- Run this if there are items in the cart -->
-    <div class="">
+    <div v-if="store.cartCount > 0" class="">
       <!-- Cart Items -->
       <div class="divide-y divide-gray-200 pb-[50px]">
         <!-- Item 1 -->
@@ -80,6 +80,18 @@
     <div v-if="output">
       <div>{{ output }}</div>
     </div>
+    <!-- Run this if there are no items in the cart -->
+    <div v-else class="flex flex-col items-center justify-center">
+      <img src="/public/icons/cart.svg" width="70" height="70" alt="Empty cart" class="" />
+      <h3 class="text-lg">Your cart is empty</h3>
+
+      <router-link
+        to="/dashboard/scanner"
+        class="w-full flex justify-center items-center bg-black text-white py-3 px-4 rounded-lg font-medium"
+      >
+        Start Shopping
+      </router-link>
+    </div>
   </div>
   <toastComponent
     v-model:toastMessage="toastMessage"
@@ -117,6 +129,7 @@ const SubmitOrder = async () => {
 
     const response = await store.createOrder()
     if (response.status !== 201) {
+      alert(response)
       return
     }
     processPayment(response)
