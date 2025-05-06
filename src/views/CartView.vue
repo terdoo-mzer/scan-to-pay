@@ -1,3 +1,4 @@
+
 <template>
   <div class="min-h-screen">
     <!-- Run this if there are items in the cart -->
@@ -81,9 +82,7 @@
         </button>
       </div>
     </div>
-    <div v-if="output">
-      <div>{{ output }}</div>
-    </div>
+
     <!-- Run this if there are no items in the cart -->
     <div v-else class="flex flex-col items-center justify-center">
       <img src="/public/icons/cart.svg" width="70" height="70" alt="Empty cart" class="" />
@@ -112,8 +111,6 @@ import toastComponent from '@/components/toastComponent.vue'
 import { processPayment } from '@/services/paymentService'
 
 const store = useShopStore()
-
-const output = ref('')
 const loading = ref(false)
 
 const toastMessage = ref('')
@@ -133,7 +130,7 @@ const SubmitOrder = async () => {
 
     const response = await store.createOrder()
     if (response.status !== 201) {
-      alert(response)
+      // Return some message to the user + a toast message
       return
     }
     processPayment(response)
