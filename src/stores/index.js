@@ -63,7 +63,7 @@ export const useShopStore = defineStore('shop', () => {
                 throw new Error('Network response was not ok ' + response.statusText);
             }
             const data = await response.json();
-            console.log('Order retrieved:', data.order);
+            console.log("Order data retrieved: ", data)
             return data.order;
         }catch(error){
             console.error('Error retrieving order:', error);
