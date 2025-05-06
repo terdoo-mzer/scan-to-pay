@@ -126,15 +126,23 @@ export const useShopStore = defineStore('shop', () => {
         return cart.value.reduce((acc, item) => acc + item.quantity, 0);
     });
 
+    // Compute Subtotal
     const cartSubTotal = computed(() => {
         return cart.value.reduce((acc, item) => acc + item.price, 0);
     })
 
+    // Compute Tax
+    const tax = computed(() => {
+        return cartSubTotal.value * 0.05; // Assuming 7.5% tax
+    });
+
     // Total Amount
     const cartTotal = computed(() => {
-        //return cartSubTotal.value + (cartSubTotal.value * 0.075); // Assuming 7.5% tax
-        return cartSubTotal.value 
+        return cartSubTotal.value + tax.value // Assuming 5% tax
+        // return cartSubTotal.value 
     });
+
+ 
 
     // Create order via the API
     const createOrder = async () => {
@@ -229,6 +237,7 @@ export const useShopStore = defineStore('shop', () => {
         removeFromCart,
         incrementQuantity,
         decrementQuantity,
+        tax,
         cartCount,
         cartTotal,
         cartSubTotal,
