@@ -10,7 +10,7 @@
     <!-- Receipt Content -->
     <div
       v-if="receipt"
-      class="receipt mx-auto p-4 bg-white text-black font-mono text-sm border border-gray-300 rounded shadow-md"
+      class="receipt mx-auto p-4 bg-white text-black font-sans text-sm border border-gray-300 rounded shadow-md"
     >
       <!-- Header -->
       <div class="text-center mb-4">
