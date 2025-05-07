@@ -16,6 +16,17 @@ const router = createRouter({
       path: '/',
       name: 'LandingPage',
       component: LandingView,
+      beforeEnter: (to, from, next) => {
+        const isStandalone =
+          window.matchMedia('(display-mode: standalone)').matches ||
+          window.navigator.standalone === true
+    
+        if (isStandalone) {
+          next('/dashboard')
+        } else {
+          next()
+        }
+      }
     },
     {
       path: '/dashboard',

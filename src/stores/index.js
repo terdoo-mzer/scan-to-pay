@@ -11,8 +11,7 @@ export const useShopStore = defineStore('shop', () => {
     const retrieveOrders = async () => {
     
         try {
-            if(customerId.value === null) {
-               
+            if(customerId.value === null) { 
                 return {
                     message: 'There is No customer Id',
                     code: 1
@@ -160,21 +159,21 @@ export const useShopStore = defineStore('shop', () => {
             // }
 
             const order = {
-                    items: [
-                      {
-                        barcode: "6154000082116",
-                        name: "Bigi 750ml Bottle Water",
-                        price: 400,
-                        quantity: 1
-                      },
-                      {
-                        barcode: "5449000293824",
-                        name: "Coca-cola 60cl",
-                        price: 700,
-                        quantity: 1
-                      }
-                    ],
-                  customerId: customerId.value  
+                items: [
+                    {
+                    barcode: "6154000082116",
+                    name: "Bigi 750ml Bottle Water",
+                    price: 400,
+                    quantity: 1
+                    },
+                    {
+                    barcode: "5449000293824",
+                    name: "Coca-cola 60cl",
+                    price: 700,
+                    quantity: 1
+                    }
+                ],
+                customerId: customerId.value  
             }
 
 

@@ -1,59 +1,58 @@
 <template>
   <div class="min-h-screen">
     <!-- Run this if there are items in the cart -->
-    <div v-if="store.cartCount > 0" class="">
-      <!-- Cart Items -->
-      <div class="divide-y divide-gray-200 pb-[50px]">
-        <!-- Item 1 -->
-        <div v-for="(item, index) in store.cart" :key="index" class="p-4 bg-white">
-          <div class="flex gap-3">
-            <!-- Product Image -->
-            <div class="w-15 h-15 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden">
-              <img src="/public/icons/s2s.png" alt="Product" class="w-full h-full object-cover" />
-            </div>
 
-            <!-- Product Details -->
-            <div class="flex-grow">
-              <h3 class="font-medium text-gray-900 line-clamp-2">{{ item.name }}</h3>
-              <p class="text-gray-500 text-sm mt-1">{{ item.description }}</p>
-              <p class="text-lg font-semibold text-gray-900 mt-2">
-                {{ formatCurrency(item.price) }}
-              </p>
-            </div>
+    <!-- Cart Items -->
+    <div class="divide-y divide-gray-200 pb-[50px]">
+      <!-- Item 1 -->
+      <div v-for="(item, index) in store.cart" :key="index" class="p-4 bg-white">
+        <div class="flex gap-3">
+          <!-- Product Image -->
+          <div class="w-15 h-15 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden">
+            <img src="/public/icons/s2s.png" alt="Product" class="w-full h-full object-cover" />
           </div>
 
-          <!-- Quantity Controls -->
-          <div class="flex justify-between items-center mt-3">
-            <p class="text-amber-700" @click="store.removeFromCart(index)">Remove Item</p>
-            <div class="flex items-center justify-between">
-              <button
-                @click="store.decrementQuantity(index)"
-                class="w-10 h-10 rounded-full bg-gray-100 font-bold flex items-center justify-center"
-              >
-                -
-              </button>
-
-              <span class="text-lg font-medium px-4"> {{ item.quantity }}</span>
-
-              <button
-                @click="store.incrementQuantity(index)"
-                class="w-10 h-10 rounded-full bg-gray-100 font-bold flex items-center justify-center"
-              >
-                +
-              </button>
-            </div>
+          <!-- Product Details -->
+          <div class="flex-grow">
+            <h3 class="font-medium text-gray-900 line-clamp-2">{{ item.name }}</h3>
+            <p class="text-gray-500 text-sm mt-1">{{ item.description }}</p>
+            <p class="text-lg font-semibold text-gray-900 mt-2">
+              {{ formatCurrency(item.price) }}
+            </p>
           </div>
         </div>
 
-        <!-- Back button -->
-        <div class="mt-4 flex justify-center items-center">
-          <router-link
-            to="/dashboard/scanner"
-            class="w-full flex justify-center items-center bg-black text-white py-3 px-4 rounded-lg font-medium"
-          >
-            Continue Shopping
-          </router-link>
+        <!-- Quantity Controls -->
+        <div class="flex justify-between items-center mt-3">
+          <p class="text-amber-700" @click="store.removeFromCart(index)">Remove Item</p>
+          <div class="flex items-center justify-between">
+            <button
+              @click="store.decrementQuantity(index)"
+              class="w-10 h-10 rounded-full bg-gray-100 font-bold flex items-center justify-center"
+            >
+              -
+            </button>
+
+            <span class="text-lg font-medium px-4"> {{ item.quantity }}</span>
+
+            <button
+              @click="store.incrementQuantity(index)"
+              class="w-10 h-10 rounded-full bg-gray-100 font-bold flex items-center justify-center"
+            >
+              +
+            </button>
+          </div>
         </div>
+      </div>
+
+      <!-- Back button -->
+      <div class="mt-4 flex justify-center items-center">
+        <router-link
+          to="/dashboard/scanner"
+          class="w-full flex justify-center items-center bg-black text-white py-3 px-4 rounded-lg font-medium"
+        >
+          Continue Shopping
+        </router-link>
       </div>
 
       <!-- Order Summary -->
@@ -86,7 +85,7 @@
       </div>
     </div>
     <!-- Run this if there are no items in the cart -->
-    <div v-else class="flex flex-col items-center justify-center">
+    <!-- <div v-else class="flex flex-col items-center justify-center">
       <img src="/public/icons/cart.svg" width="70" height="70" alt="Empty cart" class="" />
       <h3 class="text-lg">Your cart is empty</h3>
 
@@ -98,8 +97,7 @@
       >
         Start Shopping
       </button>
-    </div>
-    <offlineAlert :isOffline="network.isOnline" />
+    </div> -->
   </div>
 </template>
 
@@ -108,26 +106,14 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useShopStore } from '@/stores'
 import formatCurrency from '@/services/currencyFormatter'
-import offlineAlert from '@/components/offlineAlert.vue'
+
 import { processPayment } from '@/services/paymentService'
-
-import { useNetworkStore } from '@/stores/network.js'
-
-const network = useNetworkStore()
 
 const store = useShopStore()
 const loading = ref(false)
 
-// const toastMessage = ref('')
-// const toastType = ref('')
-// const toastIsVisible = ref(null)
-
-// const toastController = (message, type) => {
-//   toastMessage.value = message
-//   toastType.value = type
-//   toastIsVisible.value = true
-// }
 const router = useRouter()
+
 const goToDashboard = () => {
   router.push('/dashboard/scanner')
 }

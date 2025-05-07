@@ -103,7 +103,7 @@ import { useRoute } from 'vue-router'
 import { useShopStore } from '@/stores'
 import formatCurrency from '@/services/currencyFormatter'
 import formatDate from '@/services/dateTimeFormatter'
-import html2pdf from 'html2pdf.js'
+
 import { jsPDF } from 'jspdf'
 
 const store = useShopStore()

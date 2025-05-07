@@ -14,7 +14,43 @@
       </div>
 
       <!-- Section Two -->
-      <div v-if="receipts !== null" class="">
+      <div
+        v-if="loading"
+        role="status"
+        class="max-w-md p-4 space-y-4 border border-gray-200 divide-y divide-gray-200 rounded-sm shadow-sm animate-pulse dark:divide-gray-700 md:p-6 dark:border-gray-700"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+          </div>
+          <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+        </div>
+        <div class="flex items-center justify-between pt-4">
+          <div>
+            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+          </div>
+          <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+        </div>
+        <div class="flex items-center justify-between pt-4">
+          <div>
+            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+          </div>
+          <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+        </div>
+        <div class="flex items-center justify-between pt-4">
+          <div>
+            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+          </div>
+          <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+        </div>
+        <span class="sr-only">Loading...</span>
+      </div>
+
+      <div v-if="receipts" class="">
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-xl font-semibold">Recent Receipts</h2>
           <router-link to="dashboard/all-receipts" class="text-blue-500 hover:underline"
@@ -82,7 +118,7 @@
       </div>
 
       <!-- No Receipts --->
-      <div v-else class="text-center mt-10">
+      <div v-if="message" class="text-center mt-10">
         <p class="text-gray-500">No receipts available.</p>
         <p class="text-gray-500">Start shopping to generate receipts.</p>
       </div>
@@ -105,18 +141,30 @@ const router = useRouter()
 
 const receipts = ref(null)
 const message = ref('')
+const loading = ref(false)
+
 const getOrders = async () => {
-  const receiptsData = await shop.retrieveOrders()
-  if (receiptsData.code === 1) {
-    message.value = receiptsData.message
-    console.log('Error:', message.value)
-    return
-  }
-  if (receiptsData.code === 0) {
-    message.value = receiptsData.message
-    receipts.value = receiptsData.orders
-    console.log('Receipts: ', receiptsData.orders)
-    return
+  loading.value = true
+  try {
+    const receiptsData = await shop.retrieveOrders()
+
+    // There is no customer Id , so this will run
+    if (receiptsData.code === 1) {
+      message.value = receiptsData.message
+      console.log('Error:', message.value)
+      return
+    }
+
+    // Data is available here
+    if (receiptsData.code === 0) {
+      receipts.value = receiptsData.orders
+      console.log('Receipts: ', receiptsData.orders)
+      return
+    }
+  } catch (error) {
+    console.log('Error:', error)
+  } finally {
+    loading.value = false
   }
 }
 
