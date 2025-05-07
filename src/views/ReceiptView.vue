@@ -141,8 +141,8 @@ const shareReceipt = async () => {
     // Generate PDF blob
     const opt = {
       margin: 0.5,
-      filename: `Receipt_${receipt.value.receiptNumber}.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
+      filename: `Receipt_${receipt.value.receiptNumber}.png`,
+      image: { type: 'png', quality: 0.98 },
       html2canvas: { scale: 2 },
       jsPDF: { unit: 'in', format: 'a5', orientation: 'portrait' },
     }
