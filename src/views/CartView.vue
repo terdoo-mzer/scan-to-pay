@@ -115,7 +115,7 @@ import toastComponent from '@/components/toastComponent.vue'
 import { processPayment } from '@/services/paymentService'
 
 const store = useShopStore()
-const loading = ref(true)
+const loading = ref(false)
 
 const toastMessage = ref('')
 const toastType = ref('')
