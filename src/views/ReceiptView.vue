@@ -260,7 +260,7 @@ const shareReceipt = async () => {
     const pdfBlob = doc.output('blob')
     // alert('PDF generated successfully')
 
-    const pdfFile = new File([pdfBlob], `receipt_${receipt.value.receiptNumber}`, {
+    const pdfFile = new File([pdfBlob], `receipt_${receipt.value.receiptNumber || 'default'}.pdf`, {
       type: 'application/pdf',
     })
     // alert('PDF file created')
