@@ -88,6 +88,9 @@
     <div v-if="errMsg" class="min-h-screen flex items-center justify-center text-center px-4">
       <p class="text-red-500 text-base">{{ errMsg }}</p>
     </div>
+
+    <!-- Test Ensure to remove-->
+    <!-- <div id="test" style="width: 200px; height: 100px; background: red; color: white">Test PDF</div> -->
   </div>
 </template>
 
@@ -143,7 +146,7 @@ const shareReceipt = async () => {
       margin: 0.5,
       filename: `Receipt_${receipt.value.receiptNumber}.png`,
       image: { type: 'png', quality: 0.98 },
-      html2canvas: { scale: 2 },
+      html2canvas: { scale: 1 },
       jsPDF: { unit: 'in', format: 'a5', orientation: 'portrait' },
     }
 
@@ -151,6 +154,7 @@ const shareReceipt = async () => {
 
     // Generate the PDF as blob
     const pdfBlob = await worker.outputPdf('blob')
+    console.log(pdfBlob)
 
     const file = new File([pdfBlob], `Receipt_${receipt.value.receiptNumber}.png`, {
       type: 'image/png',
