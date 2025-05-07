@@ -137,7 +137,7 @@ const shareReceipt = async () => {
   try {
     // alert('Starting receipt share process...')
 
-    alert('Generating PDF...')
+    // alert('Generating PDF...')
     // Check if receipt data is available
     if (!receipt.value || !receipt.value.items) {
       alert('Receipt data not available')
@@ -154,18 +154,22 @@ const shareReceipt = async () => {
     doc.setFont('times', 'normal')
     doc.setFontSize(12)
 
-    // Helper function to draw a solid horizontal line
+    // Helper function to draw a thin, light grey solid line
     const drawLine = (y, startX = 0.5, width = 4.5) => {
-      doc.setLineWidth(0.02)
+      doc.setLineWidth(0.005) // Thinner line (0.005 inches ~ 0.36 points)
+      doc.setDrawColor(150) // Light grey (RGB 150/255)
       doc.line(startX, y, startX + width, y)
+      doc.setDrawColor(0) // Reset to black
     }
 
-    // Helper function to draw a dashed line
+    // Helper function to draw a thinner, lighter grey dashed line
     const drawDashedLine = (y, startX = 0.5, width = 4.5) => {
-      doc.setLineWidth(0.01)
+      doc.setLineWidth(0.003) // Thinner line (0.003 inches ~ 0.22 points)
+      doc.setDrawColor(200) // Lighter grey (RGB 200/255)
       doc.setLineDash([0.1, 0.1], 0)
       doc.line(startX, y, startX + width, y)
       doc.setLineDash() // Reset dash pattern
+      doc.setDrawColor(0) // Reset to black
     }
 
     // Header
@@ -177,7 +181,7 @@ const shareReceipt = async () => {
     doc.text('123 Main Street, City, Country', 2.75, 0.75, { align: 'center' })
     doc.text('Tel: (123) 456-7890', 2.75, 0.95, { align: 'center' })
 
-    // Separator (solid line)
+    // Separator (thin, light grey solid line)
     drawLine(1.15)
 
     // Receipt Info
@@ -211,31 +215,31 @@ const shareReceipt = async () => {
       y += 0.3
     })
 
-    // Separator (dashed line after items)
+    // Separator (thinner, lighter grey dashed line after items)
     drawDashedLine(y)
     y += 0.25
 
-    // Totals
+    // Totals (adjusted spacing for descriptions)
     doc.setFontSize(11)
-    doc.text('Subtotal:', 3.0, y)
+    doc.text('Subtotal:', 2.5, y) // Moved from x=3.0 to x=2.5 for more space
     doc.text(formatCurrency(receipt.value.subtotal || 0).replace('₦', 'NGN '), 4.5, y, {
       align: 'right',
     })
     y += 0.25
-    doc.text('Tax (5%):', 3.0, y)
+    doc.text('Tax (5%):', 2.5, y) // Moved from x=3.0 to x=2.5
     doc.text(formatCurrency(receipt.value.tax || 0).replace('₦', 'NGN '), 4.5, y, {
       align: 'right',
     })
     y += 0.25
     doc.setFont('times', 'bold')
     doc.setFontSize(12)
-    doc.text('Total:', 3.0, y)
+    doc.text('Total:', 2.5, y) // Moved from x=3.0 to x=2.5
     doc.text(formatCurrency(receipt.value.total || 0).replace('₦', 'NGN '), 4.5, y, {
       align: 'right',
     })
     doc.setFont('times', 'normal')
 
-    // Separator (solid line before disclaimers)
+    // Separator (thin, light grey solid line before disclaimers)
     y += 0.35
     drawLine(y)
     y += 0.3
@@ -256,7 +260,9 @@ const shareReceipt = async () => {
     const pdfBlob = doc.output('blob')
     // alert('PDF generated successfully')
 
-    const pdfFile = new File([pdfBlob], 'receipt.pdf', { type: 'application/pdf' })
+    const pdfFile = new File([pdfBlob], `receipt_${receipt.value.receiptNumber}`, {
+      type: 'application/pdf',
+    })
     // alert('PDF file created')
 
     if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
@@ -277,7 +283,7 @@ const shareReceipt = async () => {
       a.click()
       document.body.removeChild(a)
       URL.revokeObjectURL(url)
-      alert('Receipt downloaded')
+      // alert('Receipt downloaded')
     }
   } catch (error) {
     alert('Error: ' + error.message)
