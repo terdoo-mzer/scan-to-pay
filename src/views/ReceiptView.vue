@@ -157,6 +157,7 @@ const shareReceipt = async () => {
 
     // Now check if the Web Share API with files is available
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      alert('Can share')
       await navigator.share({
         title: 'Your Receipt',
         text: 'Here is your purchase receipt. Thank you!',
@@ -164,9 +165,11 @@ const shareReceipt = async () => {
       })
     } else {
       // If cannot share, fallback: download instead
+      alert('Cannot share share')
       await worker.save()
     }
   } catch (error) {
+    alert('An error occured in sharing')
     console.error('Error sharing receipt:', error)
   }
 }
