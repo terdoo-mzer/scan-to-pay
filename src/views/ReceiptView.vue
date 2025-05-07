@@ -9,7 +9,6 @@
 
     <!-- Receipt Content -->
     <div
-      ref="receipt"
       v-if="receipt"
       class="receipt mx-auto p-4 bg-white text-black font-sans text-sm rounded shadow-lg"
     >
@@ -95,7 +94,7 @@
 
 
 <script setup>
-import { ref, onMounted, useTemplateRef } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { useShopStore } from '@/stores'
@@ -109,7 +108,6 @@ const receiptId = ref(route.params.orderId) // Assuming the receipt ID is passed
 const receipt = ref(null)
 const loading = ref(false)
 const errMsg = ref('')
-const receiptRef = useTemplateRef('receipt')
 
 const retreiveReceipt = async () => {
   loading.value = true
