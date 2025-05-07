@@ -104,6 +104,7 @@ import { useShopStore } from '@/stores'
 import formatCurrency from '@/services/currencyFormatter'
 import formatDate from '@/services/dateTimeFormatter'
 import html2pdf from 'html2pdf.js'
+import { jsPDF } from 'jspdf'
 
 const store = useShopStore()
 const route = useRoute()
@@ -134,37 +135,47 @@ const retreiveReceipt = async () => {
 
 const shareReceipt = async () => {
   try {
-    alert('Starting receipt share process...')
+    // alert('Starting receipt share process...')
 
-    const receiptElement = document.querySelector('.receipt')
-    if (!receiptElement) {
-      alert('Receipt element not found')
-      return
-    }
+    // alert('Generating PDF...')
+    const doc = new jsPDF({
+      orientation: 'portrait',
+      unit: 'in',
+      format: 'a5',
+    })
 
-    alert('Generating PDF...')
-    const options = {
-      margin: 0,
-      filename: 'receipt.pdf',
-      image: { type: 'jpeg', quality: 0.9 }, // Lower quality
-      html2canvas: { scale: 1 }, // Lower scale for mobile
-      jsPDF: { unit: 'in', format: 'a5', orientation: 'portrait' },
-    }
+    // Add simple text content (customize as needed)
+    doc.setFontSize(12)
+    doc.text('Scan 2 Pay', 0.5, 0.5)
+    doc.text('123 Main Street, City, Country', 0.5, 0.7)
+    doc.text(`Receipt: ${receipt.value.receiptNumber}`, 0.5, 0.9)
+    doc.text('Qty  Item  Price', 0.5, 1.1)
+    receipt.value.items.forEach((item, index) => {
+      doc.text(
+        `${item.quantity}  ${item.name}  ${formatCurrency(item.price)}`,
+        0.5,
+        1.3 + index * 0.2
+      )
+    })
+    doc.text(`Subtotal: ${formatCurrency(receipt.value.subtotal)}`, 0.5, 2.5)
+    doc.text(`Tax (5%): ${formatCurrency(receipt.value.tax)}`, 0.5, 2.7)
+    doc.text(`Total: ${formatCurrency(receipt.value.total)}`, 0.5, 2.9)
+    doc.text('Thank you for shopping!', 0.5, 3.1)
 
-    const pdfBlob = await html2pdf().set(options).from(receiptElement).output('blob')
-    alert('PDF generated successfully')
+    const pdfBlob = doc.output('blob')
+    // alert('PDF generated successfully')
 
     const pdfFile = new File([pdfBlob], 'receipt.pdf', { type: 'application/pdf' })
-    alert('PDF file created')
+    // alert('PDF file created')
 
     if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
-      alert('Attempting to share via Web Share API...')
+      // alert('Attempting to share via Web Share API...')
       await navigator.share({
         title: 'Your Receipt',
         text: 'Here is your purchase receipt. Thank you!',
         files: [pdfFile],
       })
-      alert('Receipt shared successfully')
+      // alert('Receipt shared successfully')
     } else {
       alert('Web Share not supported, downloading instead...')
       const url = URL.createObjectURL(pdfBlob)
