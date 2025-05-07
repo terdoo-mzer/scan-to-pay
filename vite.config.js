@@ -25,7 +25,7 @@ export default defineConfig({
         "display": "standalone",
         "orientation": "any",
         "background_color": "#fff",
-        "theme_color": "#ff3385",
+        "theme_color": "#000000",
         "icons": [
           {
             "src": "icons/s2s.png",
