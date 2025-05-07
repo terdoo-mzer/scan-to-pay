@@ -134,41 +134,51 @@ const retreiveReceipt = async () => {
 
 const shareReceipt = async () => {
   try {
+    alert('Starting receipt share process...')
+
     const receiptElement = document.querySelector('.receipt')
     if (!receiptElement) {
-      console.error('Receipt element not found.')
       alert('Receipt element not found')
       return
     }
 
-    // Generate PDF blob
+    alert('Generating PDF...')
     const options = {
       margin: 0,
       filename: 'receipt.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 },
+      image: { type: 'jpeg', quality: 0.9 }, // Lower quality
+      html2canvas: { scale: 1 }, // Lower scale for mobile
       jsPDF: { unit: 'in', format: 'a5', orientation: 'portrait' },
     }
 
     const pdfBlob = await html2pdf().set(options).from(receiptElement).output('blob')
+    alert('PDF generated successfully')
 
     const pdfFile = new File([pdfBlob], 'receipt.pdf', { type: 'application/pdf' })
+    alert('PDF file created')
 
-    // Now check if the Web Share API with files is available
     if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
+      alert('Attempting to share via Web Share API...')
       await navigator.share({
         title: 'Your Receipt',
         text: 'Here is your purchase receipt. Thank you!',
         files: [pdfFile],
       })
+      alert('Receipt shared successfully')
     } else {
-      // If cannot share, fallback: download instead
-
-      pdfBlob.save()
+      alert('Web Share not supported, downloading instead...')
+      const url = URL.createObjectURL(pdfBlob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'receipt.pdf'
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+      alert('Receipt downloaded')
     }
   } catch (error) {
-    alert('An error occured in sharing')
-    console.error('Error sharing receipt:', error)
+    alert('Error: ' + error.message)
   }
 }
 
