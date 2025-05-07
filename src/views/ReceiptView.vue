@@ -133,8 +133,8 @@ const retreiveReceipt = async () => {
 
 const shareReceipt = async () => {
   try {
-    // const receiptElement = document.querySelector('.receipt')
-    if (!receiptRef.value) {
+    const receiptElement = document.querySelector('.receipt')
+    if (!receiptElement) {
       console.error('Receipt element not found.')
       alert('Receipt element not found')
       return
@@ -149,7 +149,7 @@ const shareReceipt = async () => {
       jsPDF: { unit: 'in', format: 'a5', orientation: 'portrait' },
     }
 
-    const worker = html2pdf().from(receiptRef.value).set(opt)
+    const worker = html2pdf().from(receiptElement).set(opt)
 
     // Generate the PDF as blob
     const pdfBlob = await worker.outputPdf('blob')
