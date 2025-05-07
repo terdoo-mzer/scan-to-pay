@@ -1,7 +1,6 @@
 <template>
   <div class="min-h-screen">
     <!-- Run this if there are items in the cart -->
-
     <div v-if="store.cartCount > 0" class="">
       <!-- Cart Items -->
       <div class="divide-y divide-gray-200 pb-[50px]">
@@ -111,11 +110,14 @@ import formatCurrency from '@/services/currencyFormatter'
 
 import { processPayment } from '@/services/paymentService'
 
+import { useNetworkStore } from '@/stores/network.js'
+
+const network = useNetworkStore()
+
 const store = useShopStore()
 const loading = ref(false)
 
 const router = useRouter()
-
 const goToDashboard = () => {
   router.push('/dashboard/scanner')
 }
