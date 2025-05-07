@@ -33,10 +33,12 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { verifyPayment } from '@/services/paymentService'
+import { useShopStore } from '@/stores'
 import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
 const router = useRouter()
+const store = useShopStore()
 
 const reference = route.query.reference
 const transactionState = ref(null)
@@ -60,6 +62,8 @@ const confirmPayment = async () => {
     transactionState.value = 'success'
     console.log('Payment verified successfully')
     localStorage.removeItem('orderId')
+    // Clear cart here
+    store.clearCart()
     router.replace({ name: 'ReceiptPage', params: { orderId } })
   } else {
     transactionState.value = 'failed'
