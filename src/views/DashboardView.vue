@@ -14,7 +14,7 @@
       </div>
 
       <!-- Section Two -->
-      <div v-if="loading" class="">
+      <div v-if="loading" class="text-center">
         <div>Loading Reciepts...</div>
       </div>
 
