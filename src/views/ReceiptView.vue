@@ -268,7 +268,7 @@ const shareReceipt = async () => {
     if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
       // alert('Attempting to share via Web Share API...')
       await navigator.share({
-        title: 'Your Receipt',
+        title: 'Download Your Receipt',
         text: 'Here is your purchase receipt. Thank you!',
         files: [pdfFile],
       })

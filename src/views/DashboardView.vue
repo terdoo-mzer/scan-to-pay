@@ -3,12 +3,6 @@
     <div class="w-full max-w-md flex flex-col gap-6">
       <!-- Section One -->
       <div class="text-center">
-        <!-- <button
-          class="px-6 py-3 bg-gray-800 text-white text-lg rounded-lg shadow-md hover:bg-blue-600 transition"
-          @click="startShopping"
-        >
-          Start Shopping
-        </button> -->
         <button
           :disabled="!network.isOnline"
           :class="!network.isOnline ? 'opacity-50 cursor-not-allowed' : ''"
@@ -94,14 +88,11 @@
       </div>
     </div>
   </div>
-  <!-- <ScannerModal :modalBool="isModalOpen" @closeModal="startShopping" /> -->
-  <offlineAlert :isOffline="network.isOnline" />
 </template>
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
-import offlineAlert from '@/components/offlineAlert.vue'
 import formatCurrency from '@/services/currencyFormatter'
 import formatDate from '@/services/dateTimeFormatter'
 import { useShopStore } from '@/stores'
