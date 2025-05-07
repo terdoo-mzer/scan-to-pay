@@ -9,6 +9,7 @@
 
     <!-- Receipt Content -->
     <div
+      ref="receipt"
       v-if="receipt"
       class="receipt mx-auto p-4 bg-white text-black font-sans text-sm rounded shadow-lg"
     >
@@ -94,7 +95,7 @@
 
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, useTemplateRef } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { useShopStore } from '@/stores'
@@ -108,6 +109,7 @@ const receiptId = ref(route.params.orderId) // Assuming the receipt ID is passed
 const receipt = ref(null)
 const loading = ref(false)
 const errMsg = ref('')
+const receiptRef = useTemplateRef('receipt')
 
 const retreiveReceipt = async () => {
   loading.value = true
@@ -131,9 +133,10 @@ const retreiveReceipt = async () => {
 
 const shareReceipt = async () => {
   try {
-    const receiptElement = document.querySelector('.receipt')
-    if (!receiptElement) {
+    // const receiptElement = document.querySelector('.receipt')
+    if (!receiptRef.value) {
       console.error('Receipt element not found.')
+      alert('Receipt element not found')
       return
     }
 
@@ -146,18 +149,17 @@ const shareReceipt = async () => {
       jsPDF: { unit: 'in', format: 'a5', orientation: 'portrait' },
     }
 
-    const worker = html2pdf().from(receiptElement).set(opt)
+    const worker = html2pdf().from(receiptRef.value).set(opt)
 
     // Generate the PDF as blob
     const pdfBlob = await worker.outputPdf('blob')
 
-    const file = new File([pdfBlob], `Receipt_${receipt.value.receiptNumber}.pdf`, {
-      type: 'application/pdf',
+    const file = new File([pdfBlob], `Receipt_${receipt.value.receiptNumber}.jpg`, {
+      type: 'image/jpeg',
     })
 
     // Now check if the Web Share API with files is available
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      alert('Can share')
       await navigator.share({
         title: 'Your Receipt',
         text: 'Here is your purchase receipt. Thank you!',
@@ -165,7 +167,7 @@ const shareReceipt = async () => {
       })
     } else {
       // If cannot share, fallback: download instead
-      alert('Cannot share share')
+
       await worker.save()
     }
   } catch (error) {
