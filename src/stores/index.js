@@ -143,7 +143,6 @@ export const useShopStore = defineStore('shop', () => {
     });
 
  
-
     // Create order via the API
     const createOrder = async () => {
 
@@ -155,31 +154,28 @@ export const useShopStore = defineStore('shop', () => {
                 localStorage.setItem('customerId', JSON.stringify(customerId.value));
             } 
 
-            const order = {
-                customerId: customerId.value,
-                items: cart.value
-            }
-
             // const order = {
-            
-            //         items: [
-            //           {
-            //             barcode: "6154000082116",
-            //             name: "Bigi 750ml Bottle Water",
-            //             price: 400,
-            //             quantity: 1
-            //           },
-            //           {
-            //             barcode: "5449000293824",
-            //             name: "Coca-cola 60cl",
-            //             price: 700,
-            //             quantity: 1
-            //           }
-            //         ],
-            //       customerId: customerId.value
-            
-                
+            //     customerId: customerId.value,
+            //     items: cart.value
             // }
+
+            const order = {
+                    items: [
+                      {
+                        barcode: "6154000082116",
+                        name: "Bigi 750ml Bottle Water",
+                        price: 400,
+                        quantity: 1
+                      },
+                      {
+                        barcode: "5449000293824",
+                        name: "Coca-cola 60cl",
+                        price: 700,
+                        quantity: 1
+                      }
+                    ],
+                  customerId: customerId.value  
+            }
 
 
             // Make API call to create order

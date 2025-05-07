@@ -9,13 +9,14 @@
         >
           Start Shopping
         </button> -->
-        <router-link
-          to="/dashboard/scanner"
-          class="px-6 py-3 bg-gray-800 text-white text-lg rounded-lg shadow-md hover:bg-blue-600 transition"
-          @click="startShopping"
+        <button
+          :disabled="!network.isOnline"
+          :class="!network.isOnline ? 'opacity-50 cursor-not-allowed' : ''"
+          class="px-6 py-3 bg-black text-white text-lg rounded-lg shadow-md hover:bg-gray-700 transition"
+          @click="goToDashboard"
         >
           Start Shopping
-        </router-link>
+        </button>
       </div>
 
       <!-- Section Two -->
@@ -94,17 +95,22 @@
     </div>
   </div>
   <!-- <ScannerModal :modalBool="isModalOpen" @closeModal="startShopping" /> -->
+  <offlineAlert :isOffline="network.isOnline" />
 </template>
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
 
+import offlineAlert from '@/components/offlineAlert.vue'
 import formatCurrency from '@/services/currencyFormatter'
 import formatDate from '@/services/dateTimeFormatter'
 import { useShopStore } from '@/stores'
+import { useNetworkStore } from '@/stores/network.js'
 
 const shop = useShopStore()
+const network = useNetworkStore()
 
-// const router = useRouter()
+const router = useRouter()
 
 const receipts = ref(null)
 const message = ref('')
@@ -122,6 +128,17 @@ const getOrders = async () => {
     return
   }
 }
+
+const goToDashboard = () => {
+  router.push('/dashboard/scanner')
+}
+
+watch(
+  () => network.isOnline,
+  (online) => {
+    console.log('Online status changed:', online)
+  }
+)
 
 onMounted(() => {
   getOrders()
