@@ -142,35 +142,29 @@ const shareReceipt = async () => {
     }
 
     // Generate PDF blob
-    const opt = {
-      margin: 0.5,
-      filename: `Receipt_${receipt.value.receiptNumber}.png`,
-      image: { type: 'png', quality: 0.98 },
-      html2canvas: { scale: 1 },
+    const options = {
+      margin: 0,
+      filename: 'receipt.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
       jsPDF: { unit: 'in', format: 'a5', orientation: 'portrait' },
     }
 
-    const worker = html2pdf().from(receiptElement).set(opt)
+    const pdfBlob = await html2pdf().set(options).from(receiptElement).output('blob')
 
-    // Generate the PDF as blob
-    const pdfBlob = await worker.outputPdf('blob')
-    console.log(pdfBlob)
-
-    const file = new File([pdfBlob], `Receipt_${receipt.value.receiptNumber}.png`, {
-      type: 'image/png',
-    })
+    const pdfFile = new File([pdfBlob], 'receipt.pdf', { type: 'application/pdf' })
 
     // Now check if the Web Share API with files is available
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
       await navigator.share({
         title: 'Your Receipt',
         text: 'Here is your purchase receipt. Thank you!',
-        files: [file],
+        files: [pdfFile],
       })
     } else {
       // If cannot share, fallback: download instead
 
-      await worker.save()
+      pdfBlob.save()
     }
   } catch (error) {
     alert('An error occured in sharing')
