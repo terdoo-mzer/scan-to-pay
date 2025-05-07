@@ -152,8 +152,8 @@ const shareReceipt = async () => {
     // Generate the PDF as blob
     const pdfBlob = await worker.outputPdf('blob')
 
-    const file = new File([pdfBlob], `Receipt_${receipt.value.receiptNumber}.jpg`, {
-      type: 'image/jpeg',
+    const file = new File([pdfBlob], `Receipt_${receipt.value.receiptNumber}.png`, {
+      type: 'image/png',
     })
 
     // Now check if the Web Share API with files is available
