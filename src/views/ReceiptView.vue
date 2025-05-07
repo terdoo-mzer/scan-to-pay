@@ -137,30 +137,121 @@ const shareReceipt = async () => {
   try {
     // alert('Starting receipt share process...')
 
-    // alert('Generating PDF...')
+    alert('Generating PDF...')
+    // Check if receipt data is available
+    if (!receipt.value || !receipt.value.items) {
+      alert('Receipt data not available')
+      return
+    }
+
     const doc = new jsPDF({
       orientation: 'portrait',
       unit: 'in',
       format: 'a5',
     })
 
-    // Add simple text content (customize as needed)
+    // Set default font to Times for better Unicode support (Naira symbol)
+    doc.setFont('times', 'normal')
     doc.setFontSize(12)
-    doc.text('Scan 2 Pay', 0.5, 0.5)
-    doc.text('123 Main Street, City, Country', 0.5, 0.7)
-    doc.text(`Receipt: ${receipt.value.receiptNumber}`, 0.5, 0.9)
-    doc.text('Qty  Item  Price', 0.5, 1.1)
-    receipt.value.items.forEach((item, index) => {
-      doc.text(
-        `${item.quantity}  ${item.name}  ${formatCurrency(item.price)}`,
-        0.5,
-        1.3 + index * 0.2
-      )
+
+    // Helper function to draw a solid horizontal line
+    const drawLine = (y, startX = 0.5, width = 4.5) => {
+      doc.setLineWidth(0.02)
+      doc.line(startX, y, startX + width, y)
+    }
+
+    // Helper function to draw a dashed line
+    const drawDashedLine = (y, startX = 0.5, width = 4.5) => {
+      doc.setLineWidth(0.01)
+      doc.setLineDash([0.1, 0.1], 0)
+      doc.line(startX, y, startX + width, y)
+      doc.setLineDash() // Reset dash pattern
+    }
+
+    // Header
+    doc.setFontSize(16)
+    doc.setFont('times', 'bold')
+    doc.text('Scan 2 Pay', 2.75, 0.5, { align: 'center' })
+    doc.setFontSize(10)
+    doc.setFont('times', 'normal')
+    doc.text('123 Main Street, City, Country', 2.75, 0.75, { align: 'center' })
+    doc.text('Tel: (123) 456-7890', 2.75, 0.95, { align: 'center' })
+
+    // Separator (solid line)
+    drawLine(1.15)
+
+    // Receipt Info
+    doc.setFontSize(11)
+    doc.text(`Receipt #: ${receipt.value.receiptNumber || 'N/A'}`, 0.5, 1.35)
+    doc.text(`Date: ${formatDate(receipt.value.createdAt || new Date())}`, 4.5, 1.35, {
+      align: 'right',
     })
-    doc.text(`Subtotal: ${formatCurrency(receipt.value.subtotal)}`, 0.5, 2.5)
-    doc.text(`Tax (5%): ${formatCurrency(receipt.value.tax)}`, 0.5, 2.7)
-    doc.text(`Total: ${formatCurrency(receipt.value.total)}`, 0.5, 2.9)
-    doc.text('Thank you for shopping!', 0.5, 3.1)
+
+    // Item Table Header
+    drawDashedLine(1.55)
+    doc.setFont('times', 'bold')
+    doc.setFontSize(11)
+    doc.text('Qty', 0.5, 1.75)
+    doc.text('Description', 1.0, 1.75)
+    doc.text('Amount', 4.5, 1.75, { align: 'right' })
+    doc.setFont('times', 'normal')
+    doc.setFontSize(10)
+
+    // Items (dynamic)
+    let y = 2.0
+    receipt.value.items.forEach((item) => {
+      const itemName =
+        item.name && item.name.length > 25
+          ? item.name.substring(0, 22) + '...'
+          : item.name || 'Unknown'
+      const formattedPrice = formatCurrency(item.price || 0).replace('₦', 'NGN ') // Fallback if ₦ doesn't render
+      doc.text((item.quantity || 0).toString(), 0.5, y)
+      doc.text(itemName, 1.0, y)
+      doc.text(formattedPrice, 4.5, y, { align: 'right' })
+      y += 0.3
+    })
+
+    // Separator (dashed line after items)
+    drawDashedLine(y)
+    y += 0.25
+
+    // Totals
+    doc.setFontSize(11)
+    doc.text('Subtotal:', 3.0, y)
+    doc.text(formatCurrency(receipt.value.subtotal || 0).replace('₦', 'NGN '), 4.5, y, {
+      align: 'right',
+    })
+    y += 0.25
+    doc.text('Tax (5%):', 3.0, y)
+    doc.text(formatCurrency(receipt.value.tax || 0).replace('₦', 'NGN '), 4.5, y, {
+      align: 'right',
+    })
+    y += 0.25
+    doc.setFont('times', 'bold')
+    doc.setFontSize(12)
+    doc.text('Total:', 3.0, y)
+    doc.text(formatCurrency(receipt.value.total || 0).replace('₦', 'NGN '), 4.5, y, {
+      align: 'right',
+    })
+    doc.setFont('times', 'normal')
+
+    // Separator (solid line before disclaimers)
+    y += 0.35
+    drawLine(y)
+    y += 0.3
+
+    // Disclaimers
+    doc.setFontSize(9)
+    doc.text('Goods sold in good condition are not returnable.', 2.75, y, { align: 'center' })
+    y += 0.25
+    doc.text('Please, no refund of cash after purchase.', 2.75, y, { align: 'center' })
+
+    // Footer
+    y += 0.4
+    doc.setFontSize(11)
+    doc.text('Thank you for shopping with us!', 2.75, y, { align: 'center' })
+    y += 0.25
+    doc.text('Visit us again!', 2.75, y, { align: 'center' })
 
     const pdfBlob = doc.output('blob')
     // alert('PDF generated successfully')
