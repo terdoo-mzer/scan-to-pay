@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen flex flex-col">
     <!-- Cart Items (Scrollable Content) -->
-    <div v-if="store.cartCount > 0" class="flex-1 overflow-y-auto pb-40">
+    <div v-if="store.cartCount > 0" class="flex-1 overflow-y-auto pb-56">
       <div class="divide-y divide-gray-200">
         <!-- Item 1 -->
         <div v-for="(item, index) in store.cart" :key="index" class="p-4 bg-white">
