@@ -44,7 +44,7 @@ let animationFrameId = null
 const canDetect = ref(true)
 const isCameraSleeping = ref(false)
 let sleepTimeout = null
-const INACTIVITY_DELAY = 10000
+const INACTIVITY_DELAY = 20000
 
 // Initialize AudioContext for beep sound
 const audioContext = new (window.AudioContext || window.webkitAudioContext)()
