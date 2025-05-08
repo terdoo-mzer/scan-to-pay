@@ -44,7 +44,7 @@ let animationFrameId = null
 const canDetect = ref(true)
 const isCameraSleeping = ref(false)
 let sleepTimeout = null
-const INACTIVITY_DELAY = 5000
+const INACTIVITY_DELAY = 10000
 
 // Initialize AudioContext for beep sound
 const audioContext = new (window.AudioContext || window.webkitAudioContext)()
@@ -163,7 +163,7 @@ async function detectBarcode() {
     setTimeout(() => {
       canDetect.value = true
       console.log('Cooldown ended, can detect again')
-    }, 3000)
+    }, 1500)
   }
 }
 
