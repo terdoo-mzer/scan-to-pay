@@ -132,7 +132,7 @@ export const useShopStore = defineStore('shop', () => {
 
     // Compute Tax
     const tax = computed(() => {
-        return cartSubTotal.value * 0.05; // Assuming 7.5% tax
+        return cartSubTotal.value * 0.015; // Assuming 1.5% tax
     });
 
     // Total Amount
