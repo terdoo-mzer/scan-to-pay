@@ -67,7 +67,7 @@
             <span class="font-medium">{{ formatCurrency(store.cartSubTotal) }}</span>
           </div>
           <div class="flex justify-between">
-            <span class="text-gray-600">Tax (5%)</span>
+            <span class="text-gray-600">Tax (1.5%)</span>
             <span class="font-medium">{{ formatCurrency(store.tax) }}</span>
           </div>
         </div>
