@@ -1,9 +1,8 @@
 <template>
-  <div class="min-h-screen">
-    <!-- Run this if there are items in the cart -->
-    <div v-if="store.cartCount > 0" class="">
-      <!-- Cart Items -->
-      <div class="divide-y divide-gray-200 pb-[50px]">
+  <div class="min-h-screen flex flex-col">
+    <!-- Cart Items (Scrollable Content) -->
+    <div v-if="store.cartCount > 0" class="flex-1 overflow-y-auto pb-40">
+      <div class="divide-y divide-gray-200">
         <!-- Item 1 -->
         <div v-for="(item, index) in store.cart" :key="index" class="p-4 bg-white">
           <div class="flex gap-3">
@@ -46,7 +45,7 @@
         </div>
 
         <!-- Back button -->
-        <div class="mt-4 flex justify-center items-center">
+        <div class="mt-4 flex justify-center items-center px-4">
           <router-link
             to="/dashboard/scanner"
             class="w-full flex justify-center items-center bg-black text-white py-3 px-4 rounded-lg font-medium"
@@ -55,45 +54,48 @@
           </router-link>
         </div>
       </div>
-
-      <!-- Order Summary -->
-      <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg">
-        <div class="space-y-2 mb-4">
-          <p class="text-lg font-semibold text-gray-600">
-            You have <span class="text-black">{{ store.cartCount }} items</span> in cart
-          </p>
-          <div class="flex justify-between">
-            <span class="text-gray-600">Subtotal</span>
-            <span class="font-medium">{{ formatCurrency(store.cartSubTotal) }}</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-gray-600">Tax (1.5%)</span>
-            <span class="font-medium">{{ formatCurrency(store.tax) }}</span>
-          </div>
-        </div>
-        <button
-          @click="SubmitOrder"
-          :disabled="loading"
-          :class="loading ? 'opacity-50 cursor-not-allowed' : ''"
-          class="flex items-center justify-center w-full bg-black text-white py-3 px-4 rounded-lg font-medium"
-        >
-          Proceed to Buy ({{ formatCurrency(store.cartTotal) }})
-          <span
-            v-if="loading"
-            class="ml-2 spinner-border animate-spin inline-block w-6 h-6 border-2 border-current border-t-transparent rounded-full"
-          ></span>
-        </button>
-      </div>
     </div>
-    <!-- Run this if there are no items in the cart -->
-    <div v-else class="flex flex-col items-center justify-center">
+
+    <!-- Order Summary (Fixed at Bottom) -->
+    <div
+      v-if="store.cartCount > 0"
+      class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg"
+    >
+      <div class="space-y-2 mb-4">
+        <p class="text-lg font-semibold text-gray-600">
+          You have <span class="text-black">{{ store.cartCount }} items</span> in cart
+        </p>
+        <div class="flex justify-between">
+          <span class="text-gray-600">Subtotal</span>
+          <span class="font-medium">{{ formatCurrency(store.cartSubTotal) }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-gray-600">Tax (1.5%)</span>
+          <span class="font-medium">{{ formatCurrency(store.tax) }}</span>
+        </div>
+      </div>
+      <button
+        @click="SubmitOrder"
+        :disabled="loading"
+        :class="loading ? 'opacity-50 cursor-not-allowed' : ''"
+        class="flex items-center justify-center w-full bg-black text-white py-3 px-4 rounded-lg font-medium"
+      >
+        Proceed to Buy ({{ formatCurrency(store.cartTotal) }})
+        <span
+          v-if="loading"
+          class="ml-2 spinner-border animate-spin inline-block w-6 h-6 border-2 border-current border-t-transparent rounded-full"
+        ></span>
+      </button>
+    </div>
+
+    <!-- Empty Cart State -->
+    <div v-else class="flex flex-col items-center justify-center h-full">
       <img src="/public/icons/cart.svg" width="70" height="70" alt="Empty cart" class="" />
       <h3 class="text-lg">Your cart is empty</h3>
-
       <button
         :disabled="!network.isOnline"
         :class="!network.isOnline ? 'opacity-50 cursor-not-allowed' : ''"
-        class="w-full flex justify-center items-center bg-black text-white py-3 px-4 rounded-lg font-medium"
+        class="w-full flex justify-center items-center bg-black text-white py-3 px-4 rounded-lg font-medium mt-4"
         @click="goToDashboard"
       >
         Start Shopping
